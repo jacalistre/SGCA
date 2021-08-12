@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Configuracion{% endblock %}
+
+{% block body %}
+    <h1>Configuracion</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ configuracion.id }}</td>
+            </tr>
+            <tr>
+                <th>Rotacion_evolutivo</th>
+                <td>{{ configuracion.rotacionEvolutivo }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('configuracion_index') }}">back to list</a>
+
+    <a href="{{ path('configuracion_edit', {'id': configuracion.id}) }}">edit</a>
+
+    {{ include('configuracion/_delete_form.html.twig') }}
+{% endblock %}

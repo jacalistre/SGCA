@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block styles %}
+{% endblock %}
+{% block content %}
+        <div class="row">
+            <div class="offset-3 col-md-6 ">
+                <div class=" form ">
+                    <section class="login_content">
+                        <h1>Crear Usuario</h1>
+                        {{ include('usuario/_form.html.twig') }}
+                    </section>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+$('#usuario_roles').selectpicker();
+
+    </script>
+{% endblock %}

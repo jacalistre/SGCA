@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Centros</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+
+        <div class="form-group row">
+            <div class="col-md-4 col-sm-4">
+                {% if is_granted('ROLE_ADMIN') or is_granted("ROLE_ADMIN_MUN") %}
+                <a class="btn btn-success" href="{{ path('centro_new') }}"><span class="fa fa-plus"></span>Adicionar</a>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 table-responsive">
+
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Tipo de Centro</th>
+                <th>Provincia</th>
+                <th>Municipio</th>
+                <th>Cant. Salas</th>
+                <th>Cant. Camas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for centro in centros %}
+            <tr>
+
+                <td>  <a href="{{ path('centro_show', {'id': centro.id}) }}">{{ centro.nombre }}</a></td>
+                <td>{{ centro.descripcion }}</td>
+                <td>{{ centro.tipo }}</td>
+                <td>{{ centro.provincia }}</td>
+                <td>{{ centro.municipio }}</td>
+
+                <td>
+                    {% if centro.salas!=null %}
+                    {{ centro.salas.count }}
+                {% else %}
+                        0
+                    {% endif %}
+
+                </td>
+                <td>    {% if centro.salas!=null %}
+                        {{ centro.getCantCamas() }}
+                    {% else %}
+                        0
+                    {% endif %}</td>
+                <td>
+                    <a href="{{ path('centro_edit', {'id': centro.id}) }}"><span class="fa fa-edit"></span></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

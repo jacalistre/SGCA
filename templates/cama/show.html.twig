@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cama{% endblock %}
+
+{% block body %}
+    <h1>Cama</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cama.id }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ cama.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Numero</th>
+                <td>{{ cama.numero }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ cama.estado }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('cama_index') }}">back to list</a>
+
+    <a href="{{ path('cama_edit', {'id': cama.id}) }}">edit</a>
+
+    {{ include('cama/_delete_form.html.twig') }}
+{% endblock %}

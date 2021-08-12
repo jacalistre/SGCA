@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('paciente_delete', {'id': paciente.id}) }}" onsubmit="return confirm('Estas seguro que deseas eliminar el paciente?');" style="display: inline;">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ paciente.id) }}">
+    <a title="Eliminar" href="#" onclick="$(this).parent().submit();"><span class="fa fa-trash">{{ delete is defined ?delete:'' }}</span></a>
+</form>

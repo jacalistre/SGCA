@@ -1,0 +1,200 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Pacientes</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+             <div class="row">
+                 <div class="col-md-4 offset-4">
+                     <b>Fecha Evolutivo</b>
+                     <input  id="evolutivo"  class="date-picker form-control" placeholder="dd/mm/yyyy" type="text" required="required" type="text" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" >
+                     <br>
+                 </div>
+             </div>
+
+            <div class="row">
+                <div class="col-md-4 offset-4" style="text-align: right">
+                   <a href="#"  onclick="Evolutivo(this,event);" class="btn btn-primary"> <span class="fa fa-search">Buscar</span></a>
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <table class="table table-responsive">
+                        <thead>
+                        <tr>
+
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Carnet</th>
+                            <th>Pasaporte</th>
+                            <th>Fecha de Confirmacion</th>
+                            <th>Provincia</th>
+                            <th>Municipio</th>
+                            <th>Area de Salud</th>
+                            <th>Centro</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for paciente in pacientes %}
+                            <tr>
+
+                                <td><span class="{{ paciente.getColorEstado }}"></span><a href="{{ path('paciente_show', {'id': paciente.id}) }}">{{ paciente.nombre }}</a>
+                                </td>
+                                <td>{{ paciente.apellidos }}</td>
+                                <td>{{ paciente.carnet }}</td>
+                                <td>{{ paciente.pasaporte }}</td>
+                                <td>{{ paciente.getIngresoActual.fechaconfirmacion| date('d-m-Y') }}</td>
+                                <td>{{ paciente.provincia }}</td>
+                                <td>{{ paciente.municipio }}</td>
+                                <td>{{ paciente.area }}</td>
+                                <td>
+                                    {{paciente.getIngresoActual().centro  }}
+                                </td>
+                                 <td>
+                                    {% if is_granted('ROLE_LABORATORIO')  %}
+                                        <a onclick="PrepararPrueba(this)"href="#"  data-paciente="{{ paciente.id }}" title="Registrar resultado de prueba"><span
+                                                    class="fa fa-user-md"></span></a> {# Registrar Prueba#}
+                                    {% endif %}
+                                    {% if is_granted('ROLE_CENTRO')  or is_granted('ROLE_HOSPITAL') or is_granted('ROLE_ADMIN') %}
+                                            {% if paciente.isIngresado() %}
+                                            <a onclick="PrepararPrueba(this)"href="#" data-paciente="{{ paciente.id }}" title="Registrar resultado de prueba"><span
+                                                        class="fa fa-user-md"></span></a> {# Registrar Prueba#}
+                                              {% endif %}
+
+                                    {% endif %}
+                                    <a title="Editar Paciente"
+                                       href="{{ path('paciente_edit', {'id': paciente.id}) }}"><span
+                                                class="fa fa-edit"></span></a>
+                                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ADMIN') %}
+                                        {{ include('paciente/_delete_form.html.twig') }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="8">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Small modal -->
+
+    <div class="modal fade prueba-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel2">Registrar Prueba</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="data-id" >
+                    <b>Fecha toma de muestra</b>
+                    <input  id="prueba" class="date-picker form-control" placeholder="dd/mm/yyyy" type="text" required="required" type="text" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" >
+                   <br>
+                    <b>Resultado</b>
+                    <select id="resultado" class="selectpicker form-control" placeholder="Resultado" required>
+                        <option>
+                    Positivo
+                        </option>
+                        <option>
+                            Negativo
+                        </option>
+                    </select>
+                    <br>
+                    <b>Tipo de prueba</b>
+                    <select id="tipo" class="selectpicker form-control" placeholder="Tipo" required>
+                        <option>
+                            PCR
+                        </option>
+                        <option>
+                            Test Rapido
+                        </option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <a href="#"  data-process="false" onclick="SendPrueba(this,event)" class="btn btn-primary">Actualizar</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- /modals -->
+{% endblock %}
+{% block scripts %}
+
+    <script>
+function Evolutivo(element,event){
+$fecha= $('#evolutivo').val();
+
+if($fecha==null || $fecha==undefined || $fecha ==""){
+
+    event.stopPropagation();
+
+    return;
+}
+$fechas=$fecha.split('-');
+baseurl="{{ path('paciente_evolutivo',{'d':'replaceid','m':'replacem','y':'replacey'}) }}";
+baseurl=baseurl.replace('replaceid',$fechas[2]);
+    baseurl=baseurl.replace('replacem',$fechas[1]);
+    baseurl=baseurl.replace('replacey',$fechas[0]);
+$(element).attr('href',baseurl);
+
+}
+
+        function PrepararPrueba(element){
+            id=$(element).attr('data-paciente');
+            $('#data-id').val(id);
+            $('.prueba-modal').modal('show');
+        }
+
+        function SendPrueba(element,event){
+           if( $(element).attr("data-process")!="true") {
+
+               $fecha = $('#prueba').val();
+               fechas = $fecha.split("-");
+               $id = $('#data-id').val();
+               $tipo = $('#tipo').val();
+               $result = $('#resultado').val();
+
+               basehref = "{{ path('registrar_prueba',{'id':'replaceid','resultado':'replaceres','tipo':'replacetipo','d':'replaceday','m':'replacem','y':'replacey'}) }}";
+               basehref += "";
+               basehref = basehref.replace("replaceid", $id);
+               basehref = basehref.replace("replaceday", fechas[0]);
+               basehref = basehref.replace("replacem", fechas[1]);
+               basehref = basehref.replace("replacey", fechas[2]);
+               basehref = basehref.replace("replacetipo", $tipo);
+               basehref = basehref.replace("replaceres", $result);
+
+               if (($fecha != '' && $fecha != undefined) && ($tipo != '' && $tipo != undefined) && ($result != '' &&  $result != undefined)) {
+                   $(element).attr("data-process", "true");
+                   $(element).attr("href", basehref);
+                   $(element).click()
+               }else{
+                   return;
+               }
+           }
+        }
+    </script>
+{% endblock %}

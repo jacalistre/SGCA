@@ -1,0 +1,37 @@
+{{ form_start(form) }}
+
+<div>
+    {{ form_widget(form.centro) }}
+
+</div>
+<br>
+<div>
+    {{ form_widget(form.sala) }}
+
+</div>
+<br>
+<div>
+    {{ form_widget(form.numero) }}
+</div>
+<br>
+<div>
+    {{ form_widget(form.descripcion) }}
+</div>
+<br>
+<div>
+    {{ form_widget(form.estado) }}
+</div>
+{{ form_widget(form) }}
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <button type="button" onclick="window.location='{{  path('cama_index') }}';" class="btn btn-danger">Cancelar</button>
+    </div>
+    <div class="col-md-6">
+        <button class="btn btn-success">{{ button_label|default('Guardar') }}</button>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+
+{{ form_end(form) }}

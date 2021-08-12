@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Camas</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+
+        <div class="form-group row">
+            <div class="col-md-4 col-sm-4">
+                <a class="btn btn-success" href="{{ path('cama_new') }}"><span class="fa fa-plus"></span>Adicionar</a>
+
+            </div>
+            <div class="col-md-4 col-sm-4">
+                <a class="btn btn-success" href="{{ path('cama_multiple_new') }}"><span class="fa fa-plus"></span>Adicionar multiples</a>
+
+            </div>
+            <div class="col-md-4 col-sm-4">
+                <a class="btn btn-success" id="delete_button" href="#" onclick="sendEliminar();"><span class="fa fa-remove"></span>Eliminar(0)</a>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 table-responsive">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>Centro</th>
+               <th>Sala</th>
+                <th>Numero de Cama</th>
+                <th>Descripcion</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cama in camas %}
+            <tr>
+                <td><input type="checkbox" onclick="Select(this)" data-id="{{ cama.id }}"></td>
+                <td>{{ cama.centro }}</td>
+                <td>{{ cama.sala }}</td>
+
+                <td>   <a href="{{ path('cama_show', {'id': cama.id}) }}">{{ cama.numero }}</a></td>
+                <td>{{ cama.descripcion }}</td>
+                <td>{{ cama.estado }}</td>
+                <td>
+
+                    <a href="{{ path('cama_edit', {'id': cama.id}) }}"><span class="fa fa-edit"></span></a>
+                    {{ include('cama/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+    <script>
+        var data= new Map();
+        function Select(element){
+          id=$(element).attr('data-id');
+            if(element.checked){
+
+             data.set(id,id);
+          }else{
+             data.delete(id);
+          }
+          $('#delete_button').html('<span class="fa fa-remove"></span>Eliminar('+data.size+')')
+        }
+        function sendEliminar(){
+            if(data.size>0){
+                values="";
+                data.forEach(function(value, key) {
+                  values+=value+"-";
+                })
+               baseurl="{{ path('cama_delete_multiple',{'data':'replace_data'}) }}";
+               $resp=confirm("Estas seguro que deseas eliminar las camas seleccionadas");
+               if($resp){
+                  baseurl=baseurl.replace('replace_data',values);
+                  $('#delete_button').attr('href',baseurl);
+               }
+
+            }
+        }
+
+    </script>
+{% endblock %}

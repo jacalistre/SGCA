@@ -1,0 +1,187 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class=" form ">
+                <section class="login_content">
+                    <h1>Asignar Ubicacion</h1>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Paciente</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12" style="text-align: center">
+                                                   <h2>Datos Generales</h2>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><b>Nombre</b><br> {{ ingreso.paciente.nombre }}</div>
+
+                                                <div class="col-md-3"><b>Apellidos</b><br>{{ ingreso.paciente.apellidos }}</div>
+
+                                                <div class="col-md-3"><b>CI/Pasaporte</b><br>{% if ingreso.paciente.pasaporte==null %}
+
+                                                        {% if(ingreso.paciente.carnet!=null) %}
+
+                                                            {{ ingreso.paciente.carnet }}
+                                                        {% endif %}
+                                                    {% else %}
+                                                        {{ ingreso.paciente.pasaporte }}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-md-3"><b>Edad</b><br> {{ ingreso.paciente.edad }}</div>
+
+                                            </div>
+<br>
+                                            <div class="row">
+
+                                                <div class="col-md-3"><b>Sexo</b><br>{{ ingreso.paciente.getNonimalSex }}</div>
+                                                <div class="col-md-3"><b>Direccion CI</b><br>{{ ingreso.paciente.direccionci }}</div>
+                                                <div class="col-md-3"><b>Direccion Residencia</b><br>{{ ingreso.paciente.direccionres }}</div>
+                                                <div class="col-md-3"><b>Color de la piel</b><br>{{ ingreso.paciente.getNominalColor }}</div>
+
+
+                                            </div>
+                                            <br>
+                                            <div class="row">
+
+                                                <div class="col-md-3"><b>Provincia</b><br>{{ ingreso.paciente.provincia }}</div>
+                                                <div class="col-md-3"><b>Municipio</b><br>{{ ingreso.paciente.municipio }}</div>
+                                                <div class="col-md-3"><b>Area de Salud</b><br>{{ ingreso.paciente.area }}</div>
+                                                <div class="col-md-3"><b>Consultorio</b><br>{{ ingreso.paciente.consultorio }}</div>
+
+
+                                            </div>
+                                            <br>
+
+                                            <div class="row">
+                                                <div class="col-md-12" style="text-align: center">
+                                                    <h2>Clasificaciones</h2>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><b>Epidemiologia</b><br> {{ ingreso.paciente.epidemiologia }}</div>
+
+                                                <div class="col-md-3"><b>Sintomatologia</b><br>{{ ingreso.paciente.sintomatologia }}</div>
+
+                                                <div class="col-md-3"><b>Riesgo</b><br> {{ ingreso.paciente.riesgo }} </div>
+                                                <div class="col-md-3"><b>Transportable</b><br> {{ ingreso.paciente.transportable }}</div>
+
+                                            </div>
+<br>
+                                            <div class="row">
+                                                <div class="col-md-3"><b>Vacuna</b><br> {{ ingreso.paciente.vacuna }}</div>
+
+                                                <div class="col-md-3"><b>Cant.Dosis</b><br>{{ ingreso.paciente.dosis }}</div>
+
+                                                <div class="col-md-4"><b>Requiere transporte sanitario</b><br>{% if ingreso.paciente.transportesanitario %}SI{% else %}NO{% endif %}  </div>
+
+                                            </div>
+                                            <br>
+
+
+                                            <div class="row">
+                                                <div class="col-md-12" style="text-align: center">
+                                                    <h2>Antecedentes Personales</h2>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"><b>HTA</b><br> {% if  ingreso.paciente.hta %}SI{% else %}NO{% endif %} </div>
+                                                <div class="col-md-1"><b>DM</b><br> {% if  ingreso.paciente.dm %}SI{% else %}NO{% endif %} </div>
+                                                <div class="col-md-1"><b>EPOC</b><br> {% if  ingreso.paciente.epoc %}SI{% else %}NO{% endif %} </div>
+                                                <div class="col-md-1"><b>AB</b><br> {% if  ingreso.paciente.ab %}SI{% else %}NO{% endif %} </div>
+
+                                                <div class="col-md-1"><b>CI</b><br> {% if  ingreso.paciente.ci %}SI{% else %}NO{% endif %} </div>
+                                                <div class="col-md-1"><b>VIH</b><br> {% if  ingreso.paciente.vih %}SI{% else %}NO{% endif %} </div>
+                                                <div class="col-md-1"><b>Cancer</b><br> {% if  ingreso.paciente.cancer %}SI{% else %}NO{% endif %} </div>
+                                                <div class="col-md-1"><b>Obesidad</b><br> {% if  ingreso.paciente.obeso %}SI{% else %}NO{% endif %} </div>
+                                                <div class="col-md-4"><b>Trastornos Siquiatricos</b><br> {% if  ingreso.paciente.trastornos %}SI{% else %}NO{% endif %} </div>
+
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4"><b>Inmunodeprimido</b><br> {% if  ingreso.paciente.inmunodeprimido %}SI{% else %}NO{% endif %} </div>
+
+                                                <div class="col-md-4"><b>Otros APP</b><br> {% if  ingreso.paciente.otros %}SI{% else %}NO{% endif %} </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-12" style="text-align: center">
+                                                    <h2>Signos Vitales</h2>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><b>Frecuencia Respiratoria</b><br> {{ ingreso.paciente.fr }}</div>
+                                                <div class="col-md-3"><b>Frecuencia Cardiaca</b><br> {{ ingreso.paciente.fc }}</div>
+                                                <div class="col-md-3"><b>Tension Arterial</b><br> {{ ingreso.paciente.ta }}</div>
+                                                <div class="col-md-3"><b>Saturacion de Oxigeno</b><br> {{ ingreso.paciente.saturacion }}</div>
+
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-12" style="text-align: center">
+                                                    <h2>Datos Adicionales</h2>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12"><br> {{ ingreso.paciente.observaciones }}</div>
+
+                                            </div>
+                                            <br>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div style="position: fixed;right: 0;" class="col-md-3">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Ubicar Paciente</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+
+                                    <div class="row">
+
+                                        <div class="col-md-12">   {{ include('ingreso/_form.html.twig') }}</div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

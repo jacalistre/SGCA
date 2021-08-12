@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class=" col-md-12 ">
+            <div class=" form ">
+                <section class="login_content">
+                    <h1>Listado de Usuarios</h1>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a class="btn btn-success" href="{{ path('usuario_new') }}"><span class="fa fa-plus"></span>Adicionar</a>
+                        </div>
+                    </div>
+<div class="row" >
+    <div class="col-md-12 table-responsive">
+
+
+    <table class="table ">
+                        <thead>
+                        <tr>
+
+                            <th>Usuario</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Provincia</th>
+                            <th>Municipio</th>
+                            <th>Centro/Area</th>
+                            <th>Roles</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for usuario in usuarios %}
+                            <tr>
+
+                                <td>{{ usuario.usuario }}</td>
+
+                                <td>{{ usuario.nombre }}</td>
+                                <td>{{ usuario.apellidos }}</td>
+                                <td>{{ usuario.provincia }}</td>
+                                <td>{{ usuario.municipio }}</td>
+                                <td>
+                                    {% if usuario.centro!=null %}
+                                        {{ usuario.centro }}
+                                    {% elseif  usuario.area!=null %}
+                                        {{ usuario.area }}
+                                        {% else %}
+
+                                    {% endif %}
+                                </td>
+                                <td>{{ usuario.roles ? usuario.getDataRoles : '' }}</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-4"><a
+                                                    href="{{ path('usuario_edit', {'id': usuario.id}) }}"><span
+                                                        class="fa fa-edit"></span>Editar</a>
+                                        </div>
+                                        {% if not is_granted('ROLE_ADMIN_MUN') %}
+                                        <div class="col-md-4">
+                                            {{ include('usuario/_delete_form.html.twig') }}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="7">No hay datos que mostrar</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+</div>
+</div>
+
+
+                </section>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

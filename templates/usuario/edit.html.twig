@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+<div class="row">
+    <div class="offset-3 col-md-6 ">
+        <div class=" form ">
+            <section class="login_content">
+                <h1>Editar Usuario</h1>
+    {{ include('usuario/_form.html.twig', {'button_label': 'Actualizar'}) }}
+            </section>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        SetRoles($('#usuario_roles'));
+
+    });
+    </script>
+{% endblock %}

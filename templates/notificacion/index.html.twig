@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Alertas</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+            <div class="form-group row">
+                <div class="col-md-4 col-sm-4">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 table-responsive">
+
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>De</th>
+                            <th>Mensaje</th>
+                            <th>Fecha</th>
+                            <th>Fecha Leido</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for notificacion in notificacions %}
+                            <tr>
+                                <td>{{ notificacion.origen.getDataforMessage }}</td>
+                                <td>{{ notificacion.mensaje }}
+
+                                    <a href="{% if (is_granted("ROLE_COORDINADOR_MUNICIPAL") or is_granted("ROLE_COORDINADOR_PROVINCIAL" ) )and notificacion.paciente.getIngresoActual is not null  %}{{ path('ingreso_edit',{'id':notificacion.paciente.getIngresoActual.id}) }}{% else %} {{ path('paciente_show',{'id':notificacion.paciente.id}) }}{% endif %}">{{ notificacion.paciente.nombre }}{{ notificacion.paciente.apellidos }}
+
+                                    </a></td>
+                                <td>{{ notificacion.fechaEnvio ? notificacion.fechaEnvio|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>{{ notificacion.fechaLeido ? notificacion.fechaLeido|date('Y-m-d H:i:s') : '' }}</td>
+
+                                <td>
+                                    {% if not notificacion.fechaLeido %}
+                                        <a href="#"><span title="Marcar como leida" class="fa fa-check-circle-o"></span></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

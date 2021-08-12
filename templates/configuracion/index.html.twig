@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Configuracion index{% endblock %}
+
+{% block body %}
+    <h1>Configuracion index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Rotacion_evolutivo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for configuracion in configuracions %}
+            <tr>
+                <td>{{ configuracion.id }}</td>
+                <td>{{ configuracion.rotacionEvolutivo }}</td>
+                <td>
+                    <a href="{{ path('configuracion_show', {'id': configuracion.id}) }}">show</a>
+                    <a href="{{ path('configuracion_edit', {'id': configuracion.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('configuracion_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ingreso index{% endblock %}
+
+{% block body %}
+    <h1>Ingreso index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha_entrada</th>
+                <th>Fecha_salida</th>
+                <th>Estado</th>
+                <th>Fecha_confirmacion</th>
+                <th>Transportado</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ingreso in ingresos %}
+            <tr>
+                <td>{{ ingreso.id }}</td>
+                <td>{{ ingreso.fechaEntrada ? ingreso.fechaEntrada|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ingreso.fechaSalida ? ingreso.fechaSalida|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ingreso.estado }}</td>
+                <td>{{ ingreso.fechaConfirmacion ? ingreso.fechaConfirmacion|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ingreso.transportado ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('ingreso_show', {'id': ingreso.id}) }}">show</a>
+                    <a href="{{ path('ingreso_edit', {'id': ingreso.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ingreso_new') }}">Create new</a>
+{% endblock %}

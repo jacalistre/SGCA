@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuario{% endblock %}
+
+{% block body %}
+    <h1>Usuario</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ usuario.id }}</td>
+            </tr>
+            <tr>
+                <th>Usuario</th>
+                <td>{{ usuario.usuario }}</td>
+            </tr>
+            <tr>
+                <th>Pass</th>
+                <td>{{ usuario.pass }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ usuario.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Apellidos</th>
+                <td>{{ usuario.apellidos }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ usuario.roles ? usuario.roles|join(', ') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('usuario_index') }}">back to list</a>
+
+    <a href="{{ path('usuario_edit', {'id': usuario.id}) }}">edit</a>
+
+    {{ include('usuario/_delete_form.html.twig') }}
+{% endblock %}

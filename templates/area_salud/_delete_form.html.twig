@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('area_salud_delete', {'id': area_salud.id}) }}" onsubmit="return confirm('Estas seguro que deseas eliminar el area de salud?');" style="display: inline;">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ area_salud.id) }}">
+    <a href="#" onclick="$(this).parent().submit();"><span class="fa fa-trash"></span></a>
+</form>

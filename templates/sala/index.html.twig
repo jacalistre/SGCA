@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Salas</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+
+        <div class="form-group row">
+            <div class="col-md-4 col-sm-4">
+                <a class="btn btn-success" href="{{ path('sala_new') }}"><span class="fa fa-plus"></span>Adicionar</a>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 table-responsive">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Centro</th>
+                <th>Cant.Camas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sala in salas %}
+            <tr>
+                <td> <a href="{{ path('sala_show', {'id': sala.id}) }}">{{ sala.nombre }}</a></td>
+                <td>{{ sala.descripcion }}</td>
+                <td>{{ sala.centro }}</td>
+                <td>
+                    {% if sala.camas!=null %}
+                    {{ sala.camas.count }}
+                {% else %}
+                    {{ 0 }}
+                    {% endif %}
+                </td>
+                <td>
+
+                    <a href="{{ path('sala_edit', {'id': sala.id}) }}"><span class="fa fa-edit"></span></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

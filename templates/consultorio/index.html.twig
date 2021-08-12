@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Consultorios</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+
+        <div class="form-group row">
+            <div class="col-md-4 col-sm-4">
+                <a class="btn btn-success" href="{{ path('consultorio_new') }}"><span class="fa fa-plus"></span>Adicionar</a>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 table-responsive">
+
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>Nombre</th>
+                <th>Provincia</th>
+                <th>Municipio</th>
+                <th>Area de Salud</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for consultorio in consultorios %}
+            <tr>
+                <td><a href="{{ path('consultorio_show', {'id': consultorio.id}) }}">{{ consultorio.nombre }}</a></td>
+                <td>{{ consultorio.provincia }}</td>  <td>{{ consultorio.municipio }}</td>
+                <td>{{ consultorio.area }}</td>
+                <td>
+
+                    <a href="{{ path('consultorio_edit', {'id': consultorio.id}) }}"><span class="fa fa-edit"></span></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

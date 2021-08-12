@@ -1,0 +1,52 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    # config/packages/security.yaml
+    # ...
+    encoders:
+      App\Entity\Usuario:
+        algorithm: auto
+    providers:
+        users:
+            entity:
+                # the class of the entity that represents users
+                class: 'App\Entity\Usuario'
+                # the property to query by - e.g. username, email, etc
+                property: 'usuario'
+                # optional: if you're using multiple Doctrine entity
+                # managers, this option defines which one to use
+                # manager_name: 'customer'
+
+    # ...
+
+
+
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+
+
+            guard:
+                authenticators:
+                    - App\Security\Authenticator
+                entry_point: App\Security\Authenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                target: app_login
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+
+      - { path: ^/usuario, roles: [ROLE_ADMIN,ROLE_ADMIN_MUN ]}
+      - { path: ^/dashboard, roles: [ROLE_ADMIN,ROLE_USER,ROLE_COORDINADOR_MUNICIPAL,ROLE_COORDINADOR_PROVINCIAL,ROLE_HOSPITAL,ROLE_LABORATORIO,ROLE_CENTRO,ROLE_AREA,ROLE_ADMIN_MUN] }

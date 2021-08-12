@@ -1,0 +1,4 @@
+<form class='eliminar_form' method="post" action="{{ path('usuario_delete', {'id': usuario.id}) }}" onsubmit="return confirm('Esta seguro que desea eliminar este usuario');" style="display: inline;">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ usuario.id) }}">
+    <a href="#" onclick="$(this).parent().submit();"><span class="fa fa-remove"></span>Eliminar</a>
+</form>

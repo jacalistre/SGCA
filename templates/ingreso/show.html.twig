@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ingreso{% endblock %}
+
+{% block body %}
+    <h1>Ingreso</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ingreso.id }}</td>
+            </tr>
+            <tr>
+                <th>Fecha_entrada</th>
+                <td>{{ ingreso.fechaEntrada ? ingreso.fechaEntrada|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Fecha_salida</th>
+                <td>{{ ingreso.fechaSalida ? ingreso.fechaSalida|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ ingreso.estado }}</td>
+            </tr>
+            <tr>
+                <th>Fecha_confirmacion</th>
+                <td>{{ ingreso.fechaConfirmacion ? ingreso.fechaConfirmacion|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Transportado</th>
+                <td>{{ ingreso.transportado ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('ingreso_index') }}">back to list</a>
+
+    <a href="{{ path('ingreso_edit', {'id': ingreso.id}) }}">edit</a>
+
+    {{ include('ingreso/_delete_form.html.twig') }}
+{% endblock %}

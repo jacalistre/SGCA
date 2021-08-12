@@ -1,0 +1,79 @@
+{{ form_start(form) }}
+
+
+<div>
+    {{ form_widget(form.usuario) }}
+
+</div>
+<div>
+    {{ form_widget(form.pass.first) }}
+</div>
+<div>
+    {{ form_widget(form.pass.second) }}
+</div>
+<div>
+    {{ form_widget(form.nombre) }}
+</div>
+<div>
+    {{ form_widget(form.apellidos) }}
+
+</div>
+<div>
+    {{ form_widget(form.roles) }}
+</div>
+<br>
+<div>
+    {{ form_widget(form.provincia) }}
+</div>
+<br>
+<div>
+    {{ form_widget(form.municipio) }}
+</div>
+<br>
+<div id="centro" style="display: none">
+    {{ form_widget(form.centro) }}
+</div>
+<br>
+<div id="area" style="display: none">
+    {{ form_widget(form.area) }}
+</div>
+<br>
+
+{{ form_widget(form) }}
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <button type="button" onclick="window.location='{{ path('usuario_index') }}';" class="btn btn-danger">Cancelar
+        </button>
+    </div>
+    <div class="col-md-6">
+        <button class="btn btn-success" type="submit">{{ button_label|default('Guardar') }}</button>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+
+{{ form_end(form) }}
+
+{% block scripts %}
+<script>
+
+        function SetRoles(element) {
+            val = $(element).val()
+            if (val == 'ROLE_CENTRO') {
+                $("#centro").show();
+                $("#area").hide();
+            } else if (val == 'ROLE_AREA') {
+                $("#area").show();
+                $("#centro").hide();
+            }else if (val == 'ROLE_HOSPITAL') {
+                $("#centro").show();
+                $("#area").hide();
+            }
+            else{
+                $("#area").hide();
+                $("#centro").hide();
+            }
+        }
+    </script>
+{% endblock %}

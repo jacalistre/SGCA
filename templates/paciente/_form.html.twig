@@ -1,0 +1,281 @@
+{{ form_start(form) }}
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Datos Generales</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_widget(form.nombre) }}
+
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_widget(form.apellidos) }}
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        {{ form_widget(form.carnet) }}
+
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(form.pasaporte) }}
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                {{ form_widget(form.edad) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_widget(form.sexo) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_widget(form.color) }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_widget(form.direccion_ci) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_widget(form.direccion_res) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        {{ form_widget(form.provincia) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(form.municipio) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(form.area) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(form.consultorio) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Clasificaciones</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <div class="row">
+            <div class="col-md-12">
+               <div class="row">
+                    <div class="col-md-3">
+                        {{ form_widget(form.epidemiologia) }}
+
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(form.sintomatologia) }}
+
+                    </div>
+                   <div class="col-md-3">
+                       {{ form_widget(form.riesgo) }}
+
+                   </div>
+                   <div class="col-md-3">
+                       {{ form_widget(form.transportable) }}
+
+                   </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-4 ">
+                        {{ form_widget(form.vacuna) }}
+
+                    </div>
+                    <div class=" col-md-4">
+                        {{ form_widget(form.dosis) }}
+
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_widget(form.transporte_sanitario) }}
+                        {{ form_label(form.hta, 'Requiere transporte sanitario') }}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Antecedentes Patologicos Personales</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-1">
+                        {{ form_widget(form.hta) }}
+                        {{ form_label(form.hta, 'HTA') }}
+
+
+                    </div>
+                    <div class="col-md-1">
+                        {{ form_widget(form.dm) }}
+                        {{ form_label(form.dm, 'DM') }}
+
+
+                    </div>
+                    <div class="col-md-1">
+                        {{ form_widget(form.epoc) }}
+                        {{ form_label(form.epoc, 'EPOC') }}
+
+
+                    </div>
+                    <div class="col-md-1">
+                        {{ form_widget(form.ab) }}
+                        {{ form_label(form.ab, 'AB') }}
+
+
+                    </div>
+                    <div class="col-md-1">
+                        {{ form_widget(form.ci) }}
+                        {{ form_label(form.ci, 'CI') }}
+
+
+                    </div>
+                    <div class="col-md-1">
+                        {{ form_widget(form.vih) }}
+                        {{ form_label(form.vih, 'VIH') }}
+
+
+                    </div>
+                    <div class="col-md-1">
+                        {{ form_widget(form.cancer) }}
+                        {{ form_label(form.cancer, 'Cancer') }}
+
+
+                    </div>
+                    <div class="col-md-2">
+                        {{ form_widget(form.obeso) }}
+                        {{ form_label(form.obeso, 'Obesidad') }}
+
+
+                    </div>
+
+                    <div class="col-md-3">
+                        {{ form_widget(form.trastornos) }}
+                        {{ form_label(form.trastornos, 'Trastornos siquiatricos') }}
+
+
+                    </div>
+                    <div class="col-md-2">
+                        {{ form_widget(form.inmunodeprimido) }}
+                        {{ form_label(form.inmunodeprimido, 'Inmunodeprimido') }}
+
+
+                    </div>
+                    <div class="col-md-2">
+                        {{ form_widget(form.otros) }}
+                        {{ form_label(form.otros, 'Otros APP') }}
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Signos vitales</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        {{ form_widget(form.fr) }}
+
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(form.fc) }}
+
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(form.ta) }}
+
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(form.saturacion) }}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Datos Adicionales</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_widget(form.observaciones) }}
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="ln_solid"></div>
+        <div class="form-group row">
+            <div class="col-md-4 col-sm-4  offset-md-4">
+                <button type="button" onclick="window.location='{{  path('paciente_index') }}';" class="btn btn-danger">Cancelar</button>
+                <button class="btn btn-primary" type="reset">Limpiar</button>
+                <button type="submit" class="btn btn-success">{{ button_label|default('Guardar') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{ form_end(form) }}

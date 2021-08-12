@@ -1,0 +1,32 @@
+{{ form_start(form) }}
+
+
+<div>
+    {{ form_errors(form.nombre,{'attr':{'class':'alert alert-error'} } ) }}
+    {{ form_widget(form.nombre) }}
+
+</div>
+<div>
+    {{ form_widget(form.descripcion) }}
+</div>
+<div>
+    {{ form_widget(form.provincia) }}
+</div>
+<br>
+<div>
+    {{ form_widget(form.municipio) }}
+</div>
+{{ form_widget(form) }}
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <button type="button" onclick="window.location='{{  path('area_salud_index') }}';" class="btn btn-danger">Cancelar</button>
+    </div>
+    <div class="col-md-6">
+        <button class="btn btn-success">{{ button_label|default('Guardar') }}</button>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+
+{{ form_end(form) }}

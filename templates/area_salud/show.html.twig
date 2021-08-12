@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AreaSalud{% endblock %}
+
+{% block body %}
+    <h1>AreaSalud</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ area_salud.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ area_salud.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ area_salud.descripcion }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('area_salud_index') }}">back to list</a>
+
+    <a href="{{ path('area_salud_edit', {'id': area_salud.id}) }}">edit</a>
+
+    {{ include('area_salud/_delete_form.html.twig') }}
+{% endblock %}
