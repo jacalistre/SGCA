@@ -29,8 +29,13 @@ class SalaController extends AbstractController
             foreach ($centros as $c){
                 $salas=array_merge($c->getSalas()->toArray(),$salas);
             }
-        }else if($user->getRoles()=="ROLE_CENTRO" || $user->getRoles()=="ROLE_HOSPITAL"){
+        }else if($user->getRoles()=="ROLE_CENTRO" ){
             $salas=$user->getCentro()->getSalas()->toArray();
+        }else if( $user->getRoles()=="ROLE_HOSPITAL"){
+            $salas=$user->getCentro()->getSalas()->toArray();
+            foreach ($user->getCentro()->getCentros() as $c){
+                $salas=array_merge($salas,$c->getSalas()->toArray());
+            }
         }else if($user->getRoles()=="ROLE_COORDINADOR_PROVINCIAL"){
             $centros=$centroRepository->findCentrosRol($user->getProvincia(),null);
             foreach ($centros as $c){
@@ -64,6 +69,20 @@ class SalaController extends AbstractController
                 'multiple' => false,
                 'expanded' => false,
                 'choices'=>$user->getMunicipio()->getCentros()
+
+
+            ]);
+
+        }
+        if(($user->getRoles()=="ROLE_HOSPITAL" or $user->getRoles()=="ROLE_CENTRO" ) &&!$form->isSubmitted()){
+            $form->remove("centro");
+            $centros=[$user->getCentro()];
+            $centros=array_merge($centros,$user->getCentro()->getCentros()->toArray());
+            $form ->add('centro', null, ['attr'=>['class'=>'selectpicker form-control'],'placeholder'=>'Centro',
+                'required' => true,
+                'multiple' => false,
+                'expanded' => false,
+                'choices'=>$centros
 
 
             ]);

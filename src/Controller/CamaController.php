@@ -32,9 +32,16 @@ class CamaController extends AbstractController
             foreach ($centros as $c){
                 $camas=array_merge($c->getCamas()->toArray(),$camas);
             }
-        }else if($user->getRoles()=="ROLE_CENTRO" || $user->getRoles()=="ROLE_HOSPITAL"){
+        }else if($user->getRoles()=="ROLE_CENTRO"){
             $camas=$user->getCentro()->getCamas()->toArray();
-        }else if($user->getRoles()=="ROLE_COORDINADOR_PROVINCIAL"){
+        }
+        else if( $user->getRoles()=="ROLE_HOSPITAL"){
+            $camas=$user->getCentro()->getCamas()->toArray();
+            foreach ($user->getCentro()->getCentros() as $c){
+                $camas=array_merge($camas,$c->getCamas()->toArray());
+            }
+        }
+        else if($user->getRoles()=="ROLE_COORDINADOR_PROVINCIAL"){
             $centros=$centroRepository->findCentrosRol($user->getProvincia(),null);
             foreach ($centros as $c){
                 $camas=array_merge($c->getCamas()->toArray(),$camas);
@@ -64,6 +71,20 @@ class CamaController extends AbstractController
                 'multiple' => false,
                 'expanded' => false,
                 'choices'=>$user->getMunicipio()->getCentros()
+
+
+            ]);
+
+        }
+        if(($user->getRoles()=="ROLE_HOSPITAL" or $user->getRoles()=="ROLE_CENTRO" ) &&!$form->isSubmitted()){
+            $form->remove("centro");
+            $centros=[$user->getCentro()];
+            $centros=array_merge($centros,$user->getCentro()->getCentros()->toArray());
+            $form ->add('centro', null, ['attr'=>['class'=>'selectpicker form-control'],'placeholder'=>'Centro',
+                'required' => true,
+                'multiple' => false,
+                'expanded' => false,
+                'choices'=>$centros
 
 
             ]);
@@ -108,6 +129,20 @@ class CamaController extends AbstractController
                 'multiple' => false,
                 'expanded' => false,
                 'choices'=>$user->getMunicipio()->getCentros()
+
+
+            ]);
+
+        }
+        if($user->getRoles()=="ROLE_HOSPITAL" &&!$form->isSubmitted()){
+            $form->remove("centro");
+            $centros=[$user->getCentro()];
+            $centros=array_merge($centros,$user->getCentro()->getCentros()->toArray());
+            $form ->add('centro', null, ['attr'=>['class'=>'selectpicker form-control'],'placeholder'=>'Centro',
+                'required' => true,
+                'multiple' => false,
+                'expanded' => false,
+                'choices'=>$centros
 
 
             ]);

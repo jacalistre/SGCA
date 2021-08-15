@@ -68,12 +68,28 @@ class Centro
      */
     private $camas;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $anexo;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Centro::class, inversedBy="centros")
+     */
+    private $hospital;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Centro::class, mappedBy="hospital")
+     */
+    private $centros;
+
     public function __construct()
     {
         $this->ingresos = new ArrayCollection();
         $this->salas = new ArrayCollection();
         $this->usuarios = new ArrayCollection();
         $this->camas = new ArrayCollection();
+        $this->centros = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -283,6 +299,60 @@ class Centro
         }
 
         return $arr;
+    }
+
+    public function getAnexo(): ?bool
+    {
+        return $this->anexo;
+    }
+
+    public function setAnexo(?bool $anexo): self
+    {
+        $this->anexo = $anexo;
+
+        return $this;
+    }
+
+    public function getHospital(): ?self
+    {
+        return $this->hospital;
+    }
+
+    public function setHospital(?self $hospital): self
+    {
+        $this->hospital = $hospital;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getCentros(): Collection
+    {
+        return $this->centros;
+    }
+
+    public function addCentro(self $centro): self
+    {
+        if (!$this->centros->contains($centro)) {
+            $this->centros[] = $centro;
+            $centro->setHospital($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCentro(self $centro): self
+    {
+        if ($this->centros->removeElement($centro)) {
+            // set the owning side to null (unless already changed)
+            if ($centro->getHospital() === $this) {
+                $centro->setHospital(null);
+            }
+        }
+
+        return $this;
     }
 
 

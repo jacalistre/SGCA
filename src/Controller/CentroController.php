@@ -25,8 +25,13 @@ class CentroController extends AbstractController
         $centros=[];
         if($user->getRoles()=="ROLE_COORDINADOR_MUNICIPAL" or $user->getRoles()=="ROLE_ADMIN_MUN"){
             $centros=$centroRepository->findCentrosRol($user->getProvincia(),$user->getMunicipio());
-        }else if($user->getRoles()=="ROLE_CENTRO" || $user->getRoles()=="ROLE_HOSPITAL"){
+        }else if($user->getRoles()=="ROLE_CENTRO" ){
             $centros=[$user->getCentro()];
+        }else if( $user->getRoles()=="ROLE_HOSPITAL"){
+            $centros=[$user->getCentro()];
+            foreach ($user->getCentro()->getCentros() as $c){
+                $centros[]=$c;
+            }
         }else if($user->getRoles()=="ROLE_COORDINADOR_PROVINCIAL"){
             $centros=$centroRepository->findCentrosRol($user->getProvincia(),null);
         }else if($user->getRoles()=="ROLE_ADMIN"){

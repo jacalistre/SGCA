@@ -337,16 +337,24 @@
 
                     <div class="modal-body">
                         <input type="hidden" id="data-ubicacion">
-
+                        <b>Centro</b>
+                        <select id="centro_ubic" class="selectpicker form-control" placeholder="Centro" required
+                                onchange="getSalas()">
+                            <option selected="selected"></option>
+                            <option value="{{ app.user.centro.id }}">
+                                {{ app.user.centro }}
+                            </option>
+                            {% for anex in app.user.centro.centros %}
+                                <option value="{{ anex.id }}">
+                                    {{ anex }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <br>
                         <b>Sala</b>
                         <select id="sala" class="selectpicker form-control" placeholder="Sala" required
                                 onchange="getCamas()">
-                            <option selected="selected"></option>
-                            {% for sala in app.user.centro.salas %}
-                                <option value="{{ sala.id }}">
-                                    {{ sala.nombre }}
-                                </option>
-                            {% endfor %}
+
                         </select>
                         <br>
                         <b>Cama</b>
@@ -474,20 +482,20 @@
 
         function SendUbicacion(element) {
             $id = $('#data-ubicacion').val();
+            $centro = $('#centro_ubic').val();
             $salas = $('#sala').val();
             $cama = $('#cama').val();
 
-            basehref = "{{ path('paciente_reubicar',{'id':'replaceid','sala':'replacesala','cama':'replacecama'}) }}";
+            basehref = "{{ path('paciente_reubicar',{'id':'replaceid','centro':'replacecentro','sala':'replacesala','cama':'replacecama'}) }}";
             basehref += "";
             basehref = basehref.replace("replaceid", $id);
             basehref = basehref.replace("replacesala", $salas);
             basehref = basehref.replace("replacecama", $cama);
-
-            if ($salas != '' && $salas != undefined && $cama != '' && $cama != undefined) {
+            basehref = basehref.replace("replacecentro", $centro);
+            if ($salas != '' && $salas != undefined && $cama != '' && $cama != undefined && $centro!=undefined) {
                 $(element).attr("data-process", "true");
                 $(element).attr("href", basehref);
             }
-
         }
 
 
@@ -539,6 +547,32 @@
                             html += "<option value='" + data[$i].id + "'>" + data[$i].nombre + "</option>";
                         }
                         $('#cama').html(html);
+                    }
+                });
+            }
+        }
+        function getSalas() {
+            baseurl = "{{ path('getsalas',{'id':'replaceid'}) }}";
+            centro = $('#centro_ubic');
+            val = centro.val();
+
+            if (val != "" && val != undefined) {
+                var url = baseurl.replace("replaceid", val);
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    //  data: myusername,
+                    cache: false,
+                    success: function (data) {
+                        html = "";
+                        if (data.length == 0) {
+                            alert("No existen camas disponibles en la sala seleccionada");
+                        }
+                        for ($i = 0; $i < data.length; $i++) {
+                            html += "<option value='" + data[$i].id + "'>" + data[$i].nombre + "</option>";
+                        }
+                        $('#sala').html(html);
+                        getCamas();
                     }
                 });
             }

@@ -309,15 +309,29 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/reubicar/{id}/{sala}/{cama}", name="paciente_reubicar", methods={"GET"})
+     * @Route("/reubicar/{id}/{centro}/{sala}/{cama}", name="paciente_reubicar", methods={"GET"})
      */
-    public function reubicar(Ingreso $ingreso,Sala $sala,Cama $cama): Response
-    {      $entityManager = $this->getDoctrine()->getManager();
+    public function reubicar(Ingreso $ingreso,Centro $centro,Sala $sala,Cama $cama): Response
+    {     $entityManager = $this->getDoctrine()->getManager();
+          $ingreso->setCentro($centro);
           $ingreso->setSala($sala);
           $estado=$entityManager->getRepository(EstadoCama::class)->Obtener("Ocupada");
           $cama->setEstado($estado);
           $ingreso->setCama($cama);
+          $ingreso->setEstado("Pendiente");
           $entityManager->flush();
+          if($centro->getId()!=$this->getUser()->getCentro()->getId()){
+             foreach ($centro->getUsuarios() as $u) {
+                 $n = new Notificacion();
+                 $n->setPaciente($ingreso->getPaciente());
+                 $n->setOrigen($this->getUser());
+                 $n->setFechaEnvio(new \DateTime("now"));
+                 $n->setMensaje("Se le ubico en su centro el paciente ");
+                 $n->setDestino($u->getId());
+                 $entityManager->persist($n);
+                 $entityManager->flush();
+                  }
+          }
           $this->addFlash("success","Paciente reubicado satisfactoriamente");
         return $this->redirectToRoute('paciente_index');
     }

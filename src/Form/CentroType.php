@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Centro;
 use App\EventListener\AddFieldSubscriber;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +19,18 @@ class CentroType extends AbstractType
             ->add('nombre',null,['attr'=>['title'=>"Debe empezar con mayúsculas, no puede contener número ni ser una cadena vacía ",'class'=>'form-control','placeholder'=>'Nombre']])
 
             ->add('descripcion',null,['attr'=>['title'=>"Debe empezar con mayúsculas, no puede contener número ni ser una cadena vacía ",'class'=>'form-control','placeholder'=>'Descripcion']])
-
+            ->add('anexo',null,['attr'=>['onclick'=>'Mostrar();','style'=>'display:inine','title'=>"Debe empezar con mayúsculas, no puede contener número ni ser una cadena vacía ",'placeholder'=>'Anexo']])
+            ->add('hospital', EntityType::class, array(
+                'class' => 'App\Entity\Centro',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.tipo like :hospital')
+                        ->setParameter('hospital', '%hospital%');
+                }, 'attr' => ['class' => 'form-control selectpicker  ','style'=>'display:none'], 'placeholder' => 'Hospital',
+                'required' => false,
+                'multiple' => false,
+                'expanded' => false,
+            ))
             ->add('tipo', ChoiceType::class, ['attr'=>['class'=>'selectpicker form-control'],'placeholder'=>'Tipo de Centro',
                 'required' => true,
                 'multiple' => false,

@@ -31,6 +31,7 @@
                 <th>Nombre</th>
                 <th>Descripcion</th>
                 <th>Tipo de Centro</th>
+                <th>Anexo</th>
                 <th>Provincia</th>
                 <th>Municipio</th>
                 <th>Cant. Salas</th>
@@ -45,6 +46,7 @@
                 <td>  <a href="{{ path('centro_show', {'id': centro.id}) }}">{{ centro.nombre }}</a></td>
                 <td>{{ centro.descripcion }}</td>
                 <td>{{ centro.tipo }}</td>
+                <td>{{ centro.anexo?centro.hospital:"NO" }}</td>
                 <td>{{ centro.provincia }}</td>
                 <td>{{ centro.municipio }}</td>
 

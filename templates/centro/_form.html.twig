@@ -19,6 +19,13 @@
 <div>
     {{ form_widget(form.tipo) }}
 </div>
+<br>
+<div  style="text-align: left;">
+    {{ form_widget(form.anexo) }}<p style="display: inline">Es un anexo de un hospital</p>
+</div>
+<div>
+    {{ form_widget(form.hospital) }}
+</div>
 {{ form_widget(form) }}
 <br>
 <div class="row">
@@ -34,3 +41,14 @@
 
 {{ form_end(form) }}
 
+<script>
+    function Mostrar(){
+        $s=$("#centro_anexo")[0].checked;
+
+        if($s){
+$("#centro_hospital").show();
+        }else{
+            $("#centro_hospital").hide();
+        }
+    }
+</script>

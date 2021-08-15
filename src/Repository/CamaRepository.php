@@ -68,7 +68,7 @@ class CamaRepository extends ServiceEntityRepository
     {
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata('App\Entity\Cama', 'p');
-        return         $this->getEntityManager()->createNativeQuery("Update cama set estado_id=:val where id=:val1" ,$rsm)
+        return   $this->getEntityManager()->createNativeQuery("Update cama set estado_id=:val where id=:val1" ,$rsm)
            ->setParameter("val",$estado)
             ->setParameter('val1', $idcama)
             ->execute()
