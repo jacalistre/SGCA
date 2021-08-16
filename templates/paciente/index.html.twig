@@ -75,6 +75,9 @@
                             {% endif %}
                             <th>Centro</th>
                             <th>Transporte Sanitario</th>
+                            {% if is_granted("ROLE_COORDINADOR_MUNICIPAL") or is_granted("ROLE_COORDINADOR_PROVINCIAL") %}
+                                <th>Observaciones</th>
+                            {% endif %}
                             <th>Acciones</th>
                         </tr>
                         </thead>
@@ -120,6 +123,9 @@
                                         NO
                                     {% endif %}
                                 </td>
+                                {% if is_granted("ROLE_COORDINADOR_MUNICIPAL") or is_granted("ROLE_COORDINADOR_PROVINCIAL") %}
+                               <td>paciente.observaciones</td>
+                                {% endif %}
                                 <td>
 
                                     {% if is_granted('ROLE_LABORATORIO') %}
