@@ -88,7 +88,9 @@ class PacienteType extends AbstractType
 
                 'choices' => [
                     'Alto Riesgo' => 'Alto',
+                     'Mediano Riesgo'=>'Mediano',
                     'Bajo Riesgo' => 'Bajo'
+
                 ],
 
             ])
