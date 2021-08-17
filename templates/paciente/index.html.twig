@@ -124,7 +124,7 @@
                                     {% endif %}
                                 </td>
                                 {% if is_granted("ROLE_COORDINADOR_MUNICIPAL") or is_granted("ROLE_COORDINADOR_PROVINCIAL") %}
-                               <td>paciente.observaciones</td>
+                               <td>{{  paciente.observaciones }}</td>
                                 {% endif %}
                                 <td>
 
