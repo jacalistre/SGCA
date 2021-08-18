@@ -148,7 +148,72 @@ class DefaultController extends AbstractController
     {
         return new JsonResponse($sala->CamaJson());
     }
+    /**
+     * @Route("/rechazar/{id}", name="rechazar_solicitud", methods={"GET"})
+     */
+    public function rechazar( Paciente $paciente): Response
+    {  $ingreso=$paciente->getIngresoActual();
+        $entityManager= $this->getDoctrine()->getManager();
 
+        if($paciente->isPendienteHospital()) {
+            if($ingreso->getCentro()==null) {
+                $ingreso->setEstado("Pendiente ubicacion");
+                $entityManager->flush();
+
+                $n = new Notificacion();
+                $n->setPaciente($ingreso->getPaciente());
+                $n->setOrigen($this->getUser());
+                $n->setFechaEnvio(new \DateTime("now"));
+                $n->setMensaje("Se rechaza la solicitud de ingreso a un hospital del paciente ");
+                $n->setDestino($ingreso->getUsuario()->getId());
+
+                $entityManager->persist($n);
+                $entityManager->flush();
+
+                $n = new Notificacion();
+                $n->setPaciente($ingreso->getPaciente());
+                $n->setOrigen($ingreso->getUsuario());
+                $n->setFechaEnvio(new \DateTime("now"));
+                $n->setMensaje("Se solicita ingreso para el paciente");
+                $n->setDestino("ROLE_COORDINADOR_MUNICIPAL");
+
+                $entityManager->persist($n);
+                $entityManager->flush();
+            }else{
+                $ingreso->setEstado("Ingresado");
+                $entityManager->flush();
+
+                $n = new Notificacion();
+                $n->setPaciente($ingreso->getPaciente());
+                $n->setOrigen($this->getUser());
+                $n->setFechaEnvio(new \DateTime("now"));
+                $n->setMensaje("Se rechaza la solicitud de ingreso a un hospital del paciente ");
+                $n->setDestino($ingreso->getUsuario()->getId());
+
+                $entityManager->persist($n);
+                $entityManager->flush();
+            }
+        }
+
+        if($paciente->isRemision()){
+            if($ingreso->getCentro()!=null) {
+                $ingreso->setEstado("Ingresado");
+                $entityManager->flush();
+
+                $n = new Notificacion();
+                $n->setPaciente($ingreso->getPaciente());
+                $n->setOrigen($this->getUser());
+                $n->setFechaEnvio(new \DateTime("now"));
+                $n->setMensaje("Se rechaza la solicitud de remision del paciente ");
+                $n->setDestino($ingreso->getUsuario()->getId());
+
+                $entityManager->persist($n);
+                $entityManager->flush();
+            }
+
+        }
+        return $this->redirectToRoute('paciente_index');
+    }
     /**
      * @Route("/retirar/{id}", name="retirar_ingreso", methods={"GET"})
      */

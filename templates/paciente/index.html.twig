@@ -127,7 +127,11 @@
                                <td>{{  paciente.observaciones }}</td>
                                 {% endif %}
                                 <td>
-
+                                    {% if is_granted('ROLE_COORDINADOR_PROVINCIAL') and (paciente.isRemision() or paciente.isPendienteHospital()) %}
+                                        <a  href="{{ path('rechazar_solicitud',{'id':paciente.id}) }}"
+                                           title="Rechazar peticion"><span
+                                                    class="fa fa-thumbs-down" style="color: darkred"></span></a> {# Rechazar  Peticion#}
+                                    {% endif %}
                                     {% if is_granted('ROLE_LABORATORIO') %}
                                         <a onclick="PrepararPrueba(this)" href="#" data-paciente="{{ paciente.id }}"
                                            title="Registrar resultado de prueba"><span
