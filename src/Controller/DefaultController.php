@@ -363,6 +363,33 @@ class DefaultController extends AbstractController
             $entityManager->persist($prueba);
         }
         $entityManager->flush();
+
+        if($this->getUser()->getRoles()=="ROLE_LABORATORIO"){
+
+            if($ingreso==null){
+                $not= new Notificacion();
+                $not->setPaciente($paciente);
+                $not->setDestino("ROLE_AREA");
+                $not->setMensaje("Se registro un resultado de una prueba para el paciente");
+                $not->setOrigen($this->getUser());
+                $not->setFechaEnvio(new \DateTime("now"));
+                $entityManager->persist($not);
+                $entityManager->flush();
+
+            }else{
+              $users=  $ingreso->getCentro()->getUsuarios();
+              foreach ($users as $u){
+                  $not= new Notificacion();
+                  $not->setPaciente($paciente);
+                  $not->setDestino($u->getId());
+                  $not->setMensaje("Se registro un resultado de una prueba para el paciente");
+                  $not->setOrigen($this->getUser());
+                  $not->setFechaEnvio(new \DateTime("now"));
+                  $entityManager->persist($not);
+                  $entityManager->flush();
+              }
+            }
+        }
         return $this->redirectToRoute('paciente_index');
     }
 
