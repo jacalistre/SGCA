@@ -170,15 +170,17 @@
                                         {% endif %}
 
 
-                                        {% if paciente.isIngresado() %}
+                                        {% if paciente.isIngresado()  %}
                                             {% if paciente.acompanante==null %}
                                                 <a onclick="PrepararAcompannante(this)" href="#"
                                                    data-paciente="{{ paciente.id }}" title="Asignar acompañante"><span
                                                             class="fa fa-user-md"></span></a> {# Asignar acompañante#}
                                             {% endif %}
+                                          {% if paciente.getIngresoActual.cama is not null %}
                                             <a onclick="PrepararPrueba(this)" href="#" data-paciente="{{ paciente.id }}"
                                                title="Registrar resultado de prueba"><span
                                                         class="fa fa-eyedropper"></span></a> {# Registrar Prueba#}
+
                                             <a href="{{ path('paciente_remision',{'id':paciente.id}) }}" onclick="return confirm('¿Estas seguro que deseas solicitar una remision del paciente?')"
                                                title="Solicitar remision" style="color: red;"><span
                                                         class="fa fa-medkit"></span></a> {#Solicitar remision#}
@@ -187,6 +189,7 @@
                                             <a href="{{ path('paciente_fallecio',{'id':paciente.getIngresoActual.id}) }}" onclick="return  confirm('Estas seguro que deseas reportar el paciente como fallecido');"
                                                title="Alta por fallecimiento" style="color: black;"><span
                                                         class="fa fa-heart"></span></a> {#Alta fallecimiento#}
+                                           {% endif %}
                                             <a href="#" onclick="PrepararCambio(this)"
                                                title="Reubicar dentro del centro"
                                                data-ingreso="{{ paciente.getIngresoActual.id }}"

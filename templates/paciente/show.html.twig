@@ -253,6 +253,7 @@
                                                data-paciente="{{ paciente.id }}" title="Asignar acompañante"><span
                                                         class="fa fa-user-md"></span>Asignar acompañante</a> {# Asignar acompañante#}
                                         {% endif %}
+                                        {% if paciente.getIngresoActual.cama is not null %}
                                         <a onclick="PrepararPrueba(this)" href="#" data-paciente="{{ paciente.id }}"
                                            title="Registrar resultado de prueba"><span
                                                     class="fa fa-eyedropper"></span>Registrar Prueba</a> {# Registrar Prueba#}
@@ -264,6 +265,7 @@
                                         <a href="{{ path('paciente_fallecio',{'id':paciente.getIngresoActual.id}) }}" onclick="return  confirm('Estas seguro que deseas reportar el paciente como fallecido');"
                                            title="Alta por fallecimiento" style="color: black;"><span
                                                     class="fa fa-heart"></span>Alta fallecimiento</a> {#Alta fallecimiento#}
+                                       {% endif %}
                                         <a href="#" onclick="PrepararCambio(this)"
                                            title="Reubicar dentro del centro"
                                            data-ingreso="{{ paciente.getIngresoActual.id }}"
