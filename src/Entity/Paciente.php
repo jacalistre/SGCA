@@ -775,20 +775,45 @@ class Paciente
 
     public function isAlta()
     {
-        $c = 0;
+        $c = "";
+        $max=-1;
         foreach ($this->ingresos as $i) {
 
-            if ($i->getEstado() == "Alta") {
-                $c++;
+            if ($i->getId()>$max) {
+                $max=$i->getId();
+                $c=$i->getEstado();
             }
-        }
-        return $c == $this->ingresos->count() && $c!=0 ;
-    }
 
+        }
+        return $c =="Alta" ;
+    }
+    public function isAltaClinica()
+    {
+        $c = "";
+        $max=-1;
+        foreach ($this->ingresos as $i) {
+
+            if ($i->getId()>$max) {
+                $max=$i->getId();
+                $c=$i->getEstado();
+            }
+
+        }
+        return $c =="Alta clinica" ;
+    }
     public function isPendienteUbic()
     {
         foreach ($this->ingresos as $i) {
             if ($i->getEstado() == "Pendiente ubicacion") {
+                return true;
+            }
+        }
+        return false;
+    }
+    public function isDomicilio()
+    {
+        foreach ($this->ingresos as $i) {
+            if ($i->getEstado() == "Ingreso domicilio") {
                 return true;
             }
         }
@@ -815,9 +840,9 @@ class Paciente
             if ($i->getEstado() == "Pendiente ubicacion" ) {
                 return "circulo-naranja";
             }
-            if ($i->getEstado() == "Alta") {
+           /* if ($i->getEstado() == "Alta") {
              $c++;
-            }
+            }*/
             if ($i->getEstado() == "Ingresado") {
                 return "circulo-rojo";
             }
@@ -830,9 +855,13 @@ class Paciente
             if ($i->getEstado() == "Pendiente Remision") {
                 return "circulo-azul";
             }
+            if($i->getEstado()=="Ingreso domicilio"){
+                return "fa fa-home";
+            }
 
         }
-        return ($c==$this->ingresos->count() && $this->ingresos->count()!=0)?"circulo-verde":"fa fa-heartbeat";
+       // return ($c==$this->ingresos->count() && $this->ingresos->count()!=0)?"circulo-verde":"fa fa-heartbeat";
+        return ($this->isAltaClinica()?"circulo-verde-claro":($this->isAlta()?"circulo-verde":"fa fa-heartbeat"));
     }
     /**
      * @return Ingreso
@@ -840,7 +869,7 @@ class Paciente
     public function getIngresoActual()
     {
         foreach ($this->ingresos as $i) {
-            if ($i->getEstado() != "Alta" && $i->getEstado() != "Fallecido") {
+            if ($i->getEstado() != "Alta" && $i->getEstado()!="Alta clinica" && $i->getEstado() != "Fallecido") {
                 return $i;
             }
         }
