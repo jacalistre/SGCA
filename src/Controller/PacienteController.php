@@ -44,7 +44,7 @@ class PacienteController extends AbstractController
             $pacientes = $user->getMunicipio()->getPacientes();
         } else if ($user->getRoles() == "ROLE_COORDINADOR_PROVINCIAL" || $user->getRoles() == "ROLE_LABORATORIO") {
             $pacientes = $user->getProvincia()->getPacientes();
-        } else if ($user->getRoles() == "ROLE_ADMIN") {
+        } else if ($user->getRoles() == "ROLE_ADMIN" or $user->getRoles()=="ROLE_SUPER_ADMIN") {
             $pacientes = new ArrayCollection($pacienteRepository->findAll());
         }
 
@@ -104,6 +104,12 @@ class PacienteController extends AbstractController
             }
             if ($estado == "Sin ingresar") {
                 return $entry->getIngresos()==null ||$entry->getIngresos()->count()==0 ;
+            }
+            if($estado=="Alta clinica"){
+                return $entry->isAltaClinica();
+            }
+            if($estado=="Ingreso domicilio"){
+                return $entry->isDomicilio();
             }
             return false;
         });
