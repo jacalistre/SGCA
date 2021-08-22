@@ -24,19 +24,17 @@ class NotificacionRepository extends ServiceEntityRepository
     // /**
     //  * @return Notificacion[] Returns an array of Notificacion objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function ObtenerNotificacionesdelPaciente($id)
     {
         return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('n.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('n.paciente = :val')
+            ->setParameter('val', $id)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Notificacion
