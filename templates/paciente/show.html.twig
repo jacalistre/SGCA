@@ -217,7 +217,7 @@
                                                 class="fa fa-thumbs-down" style="color: darkred"></span>Rechazar  Peticion</a> {# Rechazar  Peticion#}
                                 {% endif %}
                                 {% if is_granted("ROLE_SUPER_ADMIN") %}
-                                    <a href="{{ path('super_delete',{'id':paciente.id}) }}" onclick="return confirm('Estas seguro que deseas enviar el paciente a ingreso domiciliario');"
+                                    <a href="{{ path('super_delete',{'id':paciente.id}) }}" onclick="return confirm('Estas seguro que deseas eliminar este paciente');"
                                        title="Eliminar"><span
                                                 class="fa fa-trash"></span></a> {#Eliminar pacientes, ingresos y pruebas#}
                                 {% endif %}
