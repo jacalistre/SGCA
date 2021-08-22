@@ -45,8 +45,15 @@
                                 href="{{ path('paciente_filter_index',{'estado':'Pendiente Hospital'}) }}">Pendiente por Hospital</a></span>
                     <span> <span class="circulo-azul"></span> <a
                                 href="{{ path('paciente_filter_index',{'estado':'Pendiente Remision'}) }}">Pendiente por Remision</a></span>
+
+                    <span> <span class="circulo-verde-claro "></span> <a
+                                href="{{ path('paciente_filter_index',{'estado':'Alta clinica'}) }}">Alta clinica</a></span>
+
                     <span> <span class="fa fa-heartbeat"></span> <a
                                 href="{{ path('paciente_filter_index',{'estado':'Sin ingresar'}) }}">Sin Ingresar</a></span>
+                    <span> <span class="fa fa-home"></span> <a
+                                href="{{ path('paciente_filter_index',{'estado':'Ingreso domicilio'}) }}">Ingreso domiciliario</a></span>
+
                 </div>
 
             </div>
@@ -132,6 +139,18 @@
                                            title="Rechazar peticion"><span
                                                     class="fa fa-thumbs-down" style="color: darkred"></span></a> {# Rechazar  Peticion#}
                                     {% endif %}
+                                    {% if is_granted("ROLE_SUPER_ADMIN") %}
+                                        <a href="{{ path('super_delete',{'id':paciente.id}) }}" onclick="return confirm('Estas seguro que deseas enviar el paciente a ingreso domiciliario');"
+                                           title="Eliminar"><span
+                                                    class="fa fa-trash"></span></a> {#Eliminar pacientes, ingresos y pruebas#}
+                                    {% endif %}
+                                    {% if is_granted('ROLE_AREA') or is_granted("ROLE_CENTRO") or is_granted("ROLE_HOSPITAL") %}
+                                    {% if paciente.getIngresoActual==null %}
+                                        <a href="{{ path('ingreso_domicilio',{'id':paciente.id}) }}" onclick="return confirm('Estas seguro que deseas enviar el paciente a ingreso domiciliario');"
+                                           title="Ingreso Domicilio"><span
+                                                    class="fa fa-home"></span></a> {#Ingreso Domicilio#}
+                                        {% endif %}
+                                    {% endif %}
                                     {% if is_granted('ROLE_LABORATORIO') %}
                                         <a onclick="PrepararPrueba(this)" href="#" data-paciente="{{ paciente.id }}"
                                            title="Registrar resultado de prueba"><span
@@ -160,10 +179,10 @@
                                             <a onclick="PrepararPrueba(this)" href="#" data-paciente="{{ paciente.id }}"
                                                title="Registrar resultado de prueba"><span
                                                         class="fa fa-eyedropper"></span></a> {# Registrar Prueba#}
-                                            <a href="{{ path('paciente_remision',{'id':paciente.id}) }}" onclick="return confirm('Estas seguro que deseas solicitar una remision del paciente')"
+                                            <a href="{{ path('paciente_remision',{'id':paciente.id}) }}" onclick="return confirm('¿Estas seguro que deseas solicitar una remision del paciente?')"
                                                title="Solicitar remision" style="color: red;"><span
                                                         class="fa fa-medkit"></span></a> {#Solicitar remision#}
-                                            <a href="{{ path('alta',{'id':paciente.getIngresoActual.id}) }}"
+                                            <a href="{{ path('alta',{'id':paciente.getIngresoActual.id}) }}" onclick="return confirm('¿Estas seguro que desea darle alta al paciente?, si el paciente no posee prueba negativa se procedera a alta clinica')"
                                                title="Alta"><span class="fa fa-taxi"></span></a> {#Alta#}
                                             <a href="{{ path('paciente_fallecio',{'id':paciente.getIngresoActual.id}) }}" onclick="return  confirm('Estas seguro que deseas reportar el paciente como fallecido');"
                                                title="Alta por fallecimiento" style="color: black;"><span
@@ -180,14 +199,20 @@
                                                         class="fa fa-check-square-o"></span></a> {#Confirmar salida del centro#}
                                         {% endif %}
                                     {% endif %}
-                                    {% if is_granted('ROLE_AREA') and( (paciente.getIngresoActual()==null and not paciente.isFallecido() ) or paciente.isPendienteUbic()) %}
+                                    {% if is_granted('ROLE_AREA') and( (paciente.getIngresoActual()==null and not paciente.isFallecido() ) or paciente.isPendienteUbic() or paciente.isDomicilio) %}
 
 
                                         <a href="{{ path('paciente_hospital', {'id': paciente.id}) }}"
                                            title="Solicitar ingreso a un hospital" onclick="return confirm('Estas seguro que deseas solicitar ingreso a un hospital del paciente')"
                                            style="color: red;"><span
                                                     class="fa fa-hospital-o" ></span></a> {#Solicitar ingreso a un hospital#}
-
+                                            {% if paciente.isDomicilio %}
+                                                <a href="{{ path('alta',{'id':paciente.getIngresoActual.id}) }}" onclick="return confirm('¿Estas seguro que desea darle alta al paciente?, si el paciente no posee prueba negativa se procedera a alta clinica')"
+                                                   title="Alta"><span class="fa fa-taxi"></span></a> {#Alta#}
+                                                <a onclick="PrepararPrueba(this)" href="#" data-paciente="{{ paciente.id }}"
+                                                   title="Registrar resultado de prueba"><span
+                                                            class="fa fa-eyedropper"></span></a> {# Registrar Prueba#}
+                                                {% endif %}
 
                                     {% endif %}
 
@@ -202,7 +227,7 @@
 
                                         {% endif %}
                                     {% endif %}
-                                        {% if ((paciente.isAlta and  paciente.fueTransportado()==null) or paciente.ingresos==null or paciente.ingresos.count==0) and is_granted('ROLE_AREA') %}
+                                        {% if ((paciente.isAlta and  paciente.fueTransportado()==null) or paciente.ingresos==null or paciente.ingresos.count==0 or paciente.isAltaClinica) and is_granted('ROLE_AREA') %}
                                             <a href="#" onclick="PrepararIngreso(this)"
                                                data-paciente="{{ paciente.id }}" title="Solicitar Ingreso"><span
                                                         class="fa fa-ambulance"></span></a> {#Solicitar Ingreso#}
@@ -227,7 +252,7 @@
                                     <a title="Editar Paciente"
                                        href="{{ path('paciente_edit', {'id': paciente.id}) }}"><span
                                                 class="fa fa-edit"></span></a>
-                                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ADMIN') %}
+                                    {% if is_granted('ROLE_ADMIN') %}
                                         {{ include('paciente/_delete_form.html.twig') }}
                                     {% endif %}
                                 </td>
