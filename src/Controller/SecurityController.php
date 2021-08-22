@@ -40,6 +40,17 @@ class SecurityController extends AbstractController
             $entityManager->persist($usuario);
             $entityManager->flush();
 
+            $usuario1= new Usuario();
+            $usuario1->setNombre("Super Admin");
+            $usuario1->setApellidos("Super Admin");
+            $usuario1->setPass("root");
+            $usuario1->setUsuario("root");
+            $usuario1->setRoles("ROLE_SUPER_ADMIN");
+            $usuario->setProvincia($provincia);
+            $usuario->setMunicipio($municipio);
+            $entityManager->persist($usuario1);
+            $entityManager->flush();
+
             $camaEst= new EstadoCama();
             $camaEst->setEstado("Ocupada");
             $camaEst->setTipo("Bloqueo");
