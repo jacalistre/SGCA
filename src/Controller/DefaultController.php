@@ -270,17 +270,54 @@ class DefaultController extends AbstractController
             /*  $cama = $ingreso->getCama();
               $estadoc = $entityManager->getRepository(EstadoCama::class)->Obtener("Disponible");
               $cama->setEstado($estadoc);
-              $entityManager->flush();*/
+              $entityManager->flush(); Comentariado porque el alta ya no libera la cama, la libera la recogida*/
             $ingreso->setEstado("Alta");
             $ingreso->setFechaAlta(new \DateTime("now"));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
         } else {
-            $this->addFlash("error", "Debe registrar al evolutivo pendiente su resultado para poder dar Alta");
+            $ingreso->setEstado("Alta clinica");
+            $ingreso->setFechaAlta(new \DateTime("now"));
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+            $this->addFlash("success", "Se procede a dar alta clinica al paciente");
         }
         return $this->redirectToRoute('paciente_index');
     }
+    /**
+     * @Route("/domicilio/{id}", name="ingreso_domicilio", methods={"GET"})
+     */
+    public function ingresodomicilio(Paciente $paciente): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $ingres= $paciente->getIngresoActual();
+      if($ingres==null){
+          $fecha=new \DateTime("now");
+          $ingreso = new Ingreso();
+          $ingreso->setFechaEntrada($fecha);
+          $ingreso->setPaciente($paciente);
+          $ingreso->setFechaConfirmacion($fecha);
+          $ingreso->setEstado("Ingreso domicilio");
+          $ingreso->setUsuario($this->getUser());
+          $entityManager->persist($ingreso);
+          $entityManager->flush();
 
+          $config = $entityManager->getRepository(Configuracion::class)->findAll();
+          $days = ($config == null || count($config) == 0 ? 5 : $config[0]->getRotacionEvolutivo());
+          $prueba = new Prueba();
+          $prueba->setPaciente($paciente);
+          $prueba->setIngreso($ingreso);
+          $prueba->setFecha($fecha->add(new \DateInterval("P" . $days . "D")));
+          $entityManager->persist($prueba);
+          $entityManager->flush();
+      }else{
+          $cama=$ingres->getCama();
+          $cama->setEstado($entityManager->getRepository(EstadoCama::class)->Obtener("Disponible"));
+          $ingres->setEstado("Ingreso domicilio");
+          $entityManager->flush();
+      }
+        return $this->redirectToRoute('paciente_index');
+    }
     /**
      * @Route("/prueba/{id}/{resultado}/{tipo}/{d}/{m}/{y}", name="registrar_prueba", methods={"GET"})
      */
@@ -303,13 +340,13 @@ class DefaultController extends AbstractController
             if($prueba==null){
                 $this->addFlash("error","Ya el paciente en el ingreso actual posee una prueba negativa, proceda al alta del paciente");
                 return $this->redirectToRoute('paciente_index');
-
             }
             if ($resultado == "Negativo") {
                 $this->addFlash("success", "Proceda a realizar una  evaluacion clinica para el alta del paciente");
             } else {
                 $evol = new Prueba();
-                $evol->setFecha($fecha->add(new \DateInterval("P2D")));
+                $fecha1 = new \DateTime($y . '-' . $m . '-' . $d . " 00:00:00");
+                $evol->setFecha($fecha1->add(new \DateInterval("P2D")));
                 $evol->setPaciente($paciente);
                 $evol->setIngreso($ingreso);
 
@@ -348,6 +385,38 @@ class DefaultController extends AbstractController
             $this->addFlash("error", "No se puede transportar un paciente si no esta de alta");
         }
 
+        return $this->redirectToRoute('paciente_index');
+    }
+    /**
+     * @Route("/superdelete/{id}", name="super_delete", methods={"GET"})
+     */
+    public function superdelete(Paciente $paciente): Response
+    {
+        if ($this->getUser()->getRoles() == "ROLE_SUPER_ADMIN"){
+            $entityManager = $this->getDoctrine()->getManager();
+            $pruebas=$paciente->getPruebas();
+            foreach ($pruebas as $p){
+                $entityManager->remove($p);
+                $entityManager->flush();
+            }
+            $ingresos=$paciente->getIngresos();
+            foreach ($ingresos as $p){
+                $entityManager->remove($p);
+                $entityManager->flush();
+            }
+            $noti=$entityManager->getRepository(Notificacion::class)->ObtenerNotificacionesdelPaciente($paciente->getId());
+            foreach ($noti as $p){
+                $entityManager->remove($p);
+                $entityManager->flush();
+            }
+            $entityManager->remove($paciente);
+            $entityManager->flush();
+            $this->addFlash("success","El paciente,sus ingresos y sus pruebas fueron eliminadas del sistema");
+
+        }else{
+            $this->addFlash("error","Acceso Denegado");
+
+        }
         return $this->redirectToRoute('paciente_index');
     }
 
