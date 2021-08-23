@@ -196,7 +196,7 @@
                                                style="color: green;"><span
                                                         class="fa fa-building"></span></a> {#Reubicar dentro del centro#}
                                         {% endif %}
-                                        {% if(paciente.isAlta() and   paciente.fueTransportado()!=null) %}
+                                        {% if((paciente.isAlta() and   paciente.fueTransportado()!=null) or (paciente.isAltaClinica() and paciente.fueTransportado()!=null and paciente.paciente.fueTransportado.cama!=null)) %}
                                             <a href="{{ path('salida_centro',{'id':paciente.fueTransportado().id}) }}"
                                                title="Confirmar salida del centro" style="color: green;"><span
                                                         class="fa fa-check-square-o"></span></a> {#Confirmar salida del centro#}
