@@ -37,6 +37,17 @@ class PacienteRepository extends ServiceEntityRepository
 
     }
 
+    public function Coincide($paciente){
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Paciente', 'p');
+        return         $this->getEntityManager()->createNativeQuery("SELECT p.* FROM paciente p where p.carnet like :carnet and (p.nombre like :nombre or p.apellidos like :apellidos ) limit 1",$rsm)
+            ->setParameter('nombre', $paciente->getNombre())
+            ->setParameter('carnet', $paciente->getCarnet())
+            ->setParameter('apellidos', $paciente->getApellidos())
+            ->getOneOrNullResult();
+
+    }
+
     public function ObtenerPacientesIngresadorxUsuario($idusuario)
     {
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());

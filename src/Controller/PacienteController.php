@@ -152,11 +152,21 @@ class PacienteController extends AbstractController
 
         }
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
+            $p=$entityManager->getRepository(Paciente::class)->Coincide($paciente);
+            if($p!=null){
+                $this->addFlash("error","El paciente que ud esta intentando insertar cooincide con otro :".$paciente->getNombre()." ".$paciente->getApellidos()." ".$paciente->getCarnet());
+                return $this->render('paciente/new.html.twig', [
+                    'paciente' => $paciente,
+                    'form' => $form->createView(),
+                ]);
+            }
             $area = $entityManager->getRepository(AreaSalud::class)->find($request->request->get('paciente')['area']);
             $consultorio = $entityManager->getRepository(Consultorio::class)->find($request->request->get('paciente')['consultorio']);
             $paciente->setArea($area);
             $paciente->setConsultorio($consultorio);
+
             if ($this->getUser()->getRoles() == "ROLE_HOSPITAL") {
                 $ingreso = new Ingreso();
                 $ingreso->setUsuario($this->getUser());
