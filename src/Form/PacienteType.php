@@ -143,9 +143,9 @@ class PacienteType extends AbstractType
             ->add('transporte_sanitario')
             ->add('cancer')
             ->add('otros')
-            ->add('fc', null, ['attr' => ['title' => "No puede contener número", 'class' => 'form-control', 'placeholder' => 'Frecuencia Cardiaca']])
-            ->add('fr', null, ['attr' => ['title' => "No puede contener número", 'class' => 'form-control', 'placeholder' => 'Frecuencia Respiratoria']])
-            ->add('ta', null, ['attr' => ['title' => "No puede contener número", 'class' => 'form-control', 'placeholder' => 'Tension Arterial']])
+            ->add('fc', null, ['attr' => ['title' => "No puede contener número", 'class' => 'form-control', 'placeholder' => 'Frecuencia Cardiaca'], 'required' => true])
+            ->add('fr', null, ['attr' => ['title' => "No puede contener número", 'class' => 'form-control', 'placeholder' => 'Frecuencia Respiratoria'],'required' => true])
+            ->add('ta', null, ['attr' => ['title' => "No puede contener número", 'class' => 'form-control', 'placeholder' => 'Tension Arterial'],'required' => true])
             ->add('saturacion', null, ['attr' => ['title' => "No puede contener número", 'class' => 'form-control', 'placeholder' => 'Saturacion de Oxigeno']])
             ->add('observaciones', null, ['attr' => ['title' => "No puede contener número", 'class' => 'form-control', 'style' => 'width:100%']])
            /* ->add('municipio', EntityType::class, ['class'=>Municipio::class,'attr' => ['class' => 'selectpicker form-control municipio'], 'placeholder' => 'Municipio',

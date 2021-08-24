@@ -128,7 +128,29 @@ class PacienteController extends AbstractController
         $paciente = new Paciente();
         $form = $this->createForm(PacienteType::class, $paciente);
         $form->handleRequest($request);
+        if(!$form->isSubmitted() and $this->getUser()->getRoles()=="ROLE_LABORATORIO"){
+            $form->remove('epidemiologia')
+                ->remove('sintomatologia')
+                ->remove('riesgo')
+                ->remove('transportable')
+                ->remove('vacuna')
+                ->remove('dosis')
 
+                ->remove('hta')
+                ->remove('dm')
+                ->remove('epoc')
+                ->remove('ab')
+                ->remove('obeso')
+                ->remove('ci')
+                ->remove('vih')
+                ->remove('trastornos')
+                ->remove('inmunodeprimido')
+                ->remove('transporte_sanitario')
+                ->remove('cancer')
+                ->remove('otros')
+                ->remove('fc') ->remove('fr')->remove('ta')->remove('saturacion');
+
+        }
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $area = $entityManager->getRepository(AreaSalud::class)->find($request->request->get('paciente')['area']);

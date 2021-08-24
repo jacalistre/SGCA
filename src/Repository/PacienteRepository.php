@@ -31,7 +31,7 @@ class PacienteRepository extends ServiceEntityRepository
     {
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata('App\Entity\Paciente', 'p');
-        return         $this->getEntityManager()->createNativeQuery("SELECT distinct p.* FROM ingreso i  join paciente p on i.paciente_id=p.id WHERE i.centro_id=:val and (i.estado like 'Ingresado' or i.estado like 'Pendiente' or i.estado like '%Pendiente Hospital%' or i.estado like '%Pendiente Remision%' or ( i.estado like 'Alta' and i.fecha_transportado is null) ) " ,$rsm)
+        return         $this->getEntityManager()->createNativeQuery("SELECT distinct p.* FROM ingreso i  join paciente p on i.paciente_id=p.id WHERE i.centro_id=:val and (i.estado like 'Ingresado' or i.estado like 'Pendiente' or i.estado like '%Pendiente Hospital%' or i.estado like '%Pendiente Remision%' or ( i.estado like '%Alta%' and i.fecha_transportado is null) ) " ,$rsm)
    ->setParameter('val', $idcentro)
             ->getResult();
 
