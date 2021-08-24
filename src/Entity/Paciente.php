@@ -895,7 +895,7 @@ class Paciente
     public function fueTransportado()
     {
         foreach ($this->ingresos as $i) {
-            if (($i->getEstado() == "Alta" or $i->getEstado()=="Alta clinica") &&  $i->getFechaTransportado()==null) {
+            if (($i->getEstado() == "Alta" || $i->getEstado()=="Alta clinica") &&  $i->getFechaTransportado()==null) {
                return $i;
             }
         }
