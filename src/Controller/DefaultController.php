@@ -399,7 +399,7 @@ class DefaultController extends AbstractController
     public function verificarsalida(Ingreso $ingreso): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        if ($ingreso->getPaciente()->isAlta()) {
+        if ($ingreso->getPaciente()->isAlta() || $ingreso->getPaciente()->isAltaClinica()) {
             $cama = $ingreso->getCama();
             $estadoc = $entityManager->getRepository(EstadoCama::class)->Obtener("Disponible");
             $cama->setEstado($estadoc);
