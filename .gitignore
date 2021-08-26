@@ -1,10 +1,4 @@
 
 .DS_Store
-.idea/misc.xml
-.idea/modules.xml
-.idea/php.xml
-.idea/symfony2.xml
-.idea/UsbGuard.iml
-.idea/vcs.xml
-.idea/workspace.xml
+.idea
 var
