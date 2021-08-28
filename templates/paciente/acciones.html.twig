@@ -1,0 +1,125 @@
+
+    {% if is_granted('ROLE_COORDINADOR_PROVINCIAL') and (paciente.isRemision() or paciente.isPendienteHospital()) %}
+        <a  href="{{ path('rechazar_solicitud',{'id':paciente.id}) }}"
+            title="Rechazar peticion"><span
+                    class="fa fa-thumbs-down" style="color: darkred"></span></a> {# Rechazar  Peticion#}
+    {% endif %}
+    {% if is_granted("ROLE_SUPER_ADMIN") %}
+        <a href="{{ path('super_delete',{'id':paciente.id}) }}" onclick="return confirm('Estas seguro que deseas eliminar este paciente');"
+           title="Eliminar"><span
+                    class="fa fa-trash"></span></a> {#Eliminar pacientes, ingresos y pruebas#}
+    {% endif %}
+    {% if is_granted('ROLE_AREA') or is_granted("ROLE_CENTRO") or is_granted("ROLE_HOSPITAL") %}
+        {% if paciente.getIngresoActual==null %}
+            <a href="{{ path('ingreso_domicilio',{'id':paciente.id}) }}" onclick="return confirm('Estas seguro que deseas enviar el paciente a ingreso domiciliario');"
+               title="Ingreso Domicilio"><span
+                        class="fa fa-home"></span></a> {#Ingreso Domicilio#}
+        {% endif %}
+    {% endif %}
+    {% if is_granted('ROLE_LABORATORIO') %}
+        <a onclick="PrepararPrueba(this)" href="#" data-paciente="{{ paciente.id }}"
+           title="Registrar resultado de prueba"><span
+                    class="fa fa-eyedropper"></span></a> {# Registrar Prueba#}
+    {% endif %}
+    {% if is_granted('ROLE_CENTRO')  or is_granted('ROLE_HOSPITAL') or is_granted('ROLE_ADMIN') %}
+        {% if paciente.isPendienteIngreso() %}
+            <a href="{{ path('confirmar_ingreso',{'id':paciente.getIngresoActual.id}) }}"
+               title="Confirmar Ingreso"><span
+                        class="fa fa-check"></span></a> {#Confirmar Ingreso#}
+            {#   {% if paciente.acompanante==null %}
+                                                <a onclick="PrepararAcompannante(this)" href="#"
+                                                   data-paciente="{{ paciente.id }}" title="Asignar acompañante"><span
+                                                            class="fa fa-user-md"></span></a> {# Asignar acompañante#}
+            {#  {% endif %}
+            #}
+        {% endif %}
+
+
+        {% if paciente.isIngresado()  %}
+            {% if paciente.acompanante==null %}
+                <a onclick="PrepararAcompannante(this)" href="#"
+                   data-paciente="{{ paciente.id }}" title="Asignar acompañante"><span
+                            class="fa fa-user-md"></span></a> {# Asignar acompañante#}
+            {% endif %}
+            {% if paciente.getIngresoActual.cama is not null %}
+                <a onclick="PrepararPrueba(this)" href="#" data-paciente="{{ paciente.id }}"
+                   title="Registrar resultado de prueba"><span
+                            class="fa fa-eyedropper"></span></a> {# Registrar Prueba#}
+
+                <a href="{{ path('paciente_remision',{'id':paciente.id}) }}" onclick="return confirm('¿Estas seguro que deseas solicitar una remision del paciente?')"
+                   title="Solicitar remision" style="color: red;"><span
+                            class="fa fa-medkit"></span></a> {#Solicitar remision#}
+                <a href="{{ path('alta',{'id':paciente.getIngresoActual.id}) }}" onclick="return confirm('¿Estas seguro que desea darle alta al paciente?, si el paciente no posee prueba negativa se procedera a alta clinica')"
+                   title="Alta"><span class="fa fa-taxi"></span></a> {#Alta#}
+                <a href="{{ path('paciente_fallecio',{'id':paciente.getIngresoActual.id}) }}" onclick="return  confirm('Estas seguro que deseas reportar el paciente como fallecido');"
+                   title="Alta por fallecimiento" style="color: black;"><span
+                            class="fa fa-heart"></span></a> {#Alta fallecimiento#}
+            {% endif %}
+            <a href="#" onclick="PrepararCambio(this)"
+               title="Reubicar dentro del centro"
+               data-ingreso="{{ paciente.getIngresoActual.id }}"
+               style="color: green;"><span
+                        class="fa fa-building"></span></a> {#Reubicar dentro del centro#}
+        {% endif %}
+        {% if((paciente.isAlta() and   paciente.fueTransportado()!=null) or (paciente.isAltaClinica() and paciente.fueTransportado()!=null and paciente.fueTransportado.cama!=null)) %}
+            <a href="{{ path('salida_centro',{'id':paciente.fueTransportado().id}) }}"
+               title="Confirmar salida del centro" style="color: green;"><span
+                        class="fa fa-check-square-o"></span></a> {#Confirmar salida del centro#}
+        {% endif %}
+    {% endif %}
+    {% if is_granted('ROLE_AREA') and( (paciente.getIngresoActual()==null and not paciente.isFallecido() ) or paciente.isPendienteUbic() or paciente.isDomicilio) %}
+
+
+        <a href="{{ path('paciente_hospital', {'id': paciente.id}) }}"
+           title="Solicitar ingreso a un hospital" onclick="return confirm('Estas seguro que deseas solicitar ingreso a un hospital del paciente')"
+           style="color: red;"><span
+                    class="fa fa-hospital-o" ></span></a> {#Solicitar ingreso a un hospital#}
+        {% if paciente.isDomicilio %}
+            <a href="{{ path('alta',{'id':paciente.getIngresoActual.id}) }}" onclick="return confirm('¿Estas seguro que desea darle alta al paciente?, si el paciente no posee prueba negativa se procedera a alta clinica')"
+               title="Alta"><span class="fa fa-taxi"></span></a> {#Alta#}
+            <a onclick="PrepararPrueba(this)" href="#" data-paciente="{{ paciente.id }}"
+               title="Registrar resultado de prueba"><span
+                        class="fa fa-eyedropper"></span></a> {# Registrar Prueba#}
+        {% endif %}
+
+    {% endif %}
+
+    {% if is_granted('ROLE_CENTRO') or is_granted('ROLE_ADMIN') or  is_granted('ROLE_COORDINADOR_MUNICIPAL') %}
+        {% if paciente.isIngresado() or paciente.isPendienteUbic() %}
+            <a href="{{ path('paciente_hospital',{'id':paciente.id}) }}"
+               title="Solicitar ingreso a un hospital" onclick="return confirm('Estas seguro que deseas solicitar ingreso a un hospital del paciente')"
+
+               style="color: red;"><span
+                        class="fa fa-hospital-o"></span></a> {#Solicitar ingreso a un hospital#}
+
+
+        {% endif %}
+    {% endif %}
+    {% if ((paciente.isAlta and  paciente.fueTransportado()==null) or paciente.ingresos==null or paciente.ingresos.count==0 or paciente.isAltaClinica) and is_granted('ROLE_AREA') %}
+        <a href="#" onclick="PrepararIngreso(this)"
+           data-paciente="{{ paciente.id }}" title="Solicitar Ingreso"><span
+                    class="fa fa-ambulance"></span></a> {#Solicitar Ingreso#}
+    {% endif %}
+
+
+    {% if is_granted('ROLE_COORDINADOR_MUNICIPAL') or is_granted('ROLE_COORDINADOR_PROVINCIAL') or is_granted('ROLE_ADMIN') %}
+        {% if paciente.isPendienteIngreso() %}
+            <a href="{{ path('retirar_ingreso',{'id':paciente.getIngresoActual.id}) }}"
+               title="Retirar Ubicacion" style="color: green;"><span
+                        class="fa fa-user-times"></span></a> {#Eliminar ingreso#}
+        {% endif %}
+
+        {% if paciente.isPendienteUbic() or paciente.isRemision() or paciente.isPendienteHospital() %}
+            <a href="{{ path('ingreso_edit',{'id':paciente.getIngresoActual.id}) }}"
+               title="Ubicar" style="color: green;"><span
+                        class="fa fa-street-view"></span></a> {#Asignar una ubicacion#}
+        {% endif %}
+
+    {% endif %}
+
+    <a title="Editar Paciente"
+       href="{{ path('paciente_edit', {'id': paciente.id}) }}"><span
+                class="fa fa-edit"></span></a>
+    {% if is_granted('ROLE_ADMIN') %}
+        {{ include('paciente/_delete_form.html.twig') }}
+    {% endif %}

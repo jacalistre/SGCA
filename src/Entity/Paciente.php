@@ -901,6 +901,47 @@ class Paciente
         }
         return null;
     }
+public function toDataTable($rol){
+        $ingreso=$this->getIngresoActual();
+        $result=[];
+        if($rol=="ROLE_AREA"){
+         $result[]=($ingreso==null?"":$ingreso->getFechaConfirmacion()->format("d/m/Y"));
+        }
+        $result[]=$this->nombre;
+        $result[]=$this->apellidos;
+        $result[]=$this->carnet;
+        $result[]=$this->pasaporte;
+        $result[]=$this->edad;
+        $result[]=$this->riesgo;
+        $result[]=$this->getProvincia()->__toString();
+        $result[]=$this->getMunicipio()->__toString();
+        $result[]=$this->getArea()->__toString();
+    if($rol=="ROLE_AREA"){
+        $result[]=$this->getConsultorio()->__toString();
+        $result[]=$this->getDireccionRes()==null?$this->getDireccionCi():$this->getDireccionRes();
+    }
+    $result[]=$ingreso==null?"":($ingreso->getCentro()==null?"":$ingreso->getCentro()->__toString());
+    $result[]=$ingreso==null?"":($ingreso->getSala()==null?"":$ingreso->getSala()->__toString());
+    $result[]=$ingreso==null?"":($ingreso->getCama()==null?"":$ingreso->getCama()->__toString());
+    $result[]=$this->getTransporteSanitario()?"SI":"NO";
+
+    if($rol=="ROLE_COORDINADOR_MUNICIPAL" || $rol=="ROLE_COORDINADOR_PROVINCIAL"){
+        $result[]=$this->observaciones;
+    }
+    $result[]="";
+    return $result;
+}
+/*
 
 
+
+
+            { "name": "transporte_sanitario", "targets":  {{ cr }} },
+            {% set c=cr+1 %}
+
+            {% if is_granted("ROLE_COORDINADOR_MUNICIPAL") or is_granted("ROLE_COORDINADOR_PROVINCIAL") %}
+            { "name": "observaciones", "targets": {{ cr }} },
+            {% set cr=cr+1 %}
+            {% endif %}
+            { "name": "acciones", "targets": {{ cr }} }*/
 }

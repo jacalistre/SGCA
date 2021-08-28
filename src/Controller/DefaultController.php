@@ -46,7 +46,7 @@ class DefaultController extends AbstractController
      */
     public function solicitaringreso(Paciente $paciente, $d, $m, $y): Response
     {
-        if ($paciente->getIngresos()->count() == 0 || $paciente->isAlta()) {
+        if ($paciente->getIngresos()->count() == 0 || $paciente->isAlta() || $paciente->isAltaClinica()) {
             $entityManager = $this->getDoctrine()->getManager();
             $ingreso = new Ingreso();
             $fecha = new \DateTime($y . '-' . $m . '-' . $d . " 00:00:00");

@@ -280,6 +280,7 @@
 
         $(this).html( '<b>'+title+'</b><input style="width: 80px" type="text" placeholder="Buscar" />' );
     } );
+    {%  if pacientes is not defined %}
     $("table").DataTable({
         dom: "Blfrtip",
         buttons: [ {extend: "excel", className: "fa fa-save"}, {
@@ -301,6 +302,88 @@
             } );
         }
     }).init();
+    {% else %}
+
+  var tablap=  $("#pacientes").DataTable({
+        searchDelay: 1000,
+
+        responsive: 0,
+        language: {
+            "url": "{{  asset('plugins/datatables.net/Spanish.json') }}"
+        },
+        order: [[ 0, "desc" ]],
+        processing: true,
+        serverSide: true,
+        ajax: {"url":"{{ path('data_demand') }}",
+            "type":"POST",
+            "data":function(data){
+            data.filtro=filtro;
+            }
+        },
+        columns: [
+            {% set cr=0 %}
+            {% if is_granted("ROLE_AREA") %}
+
+            { "name": "fecha_confirmacion", "targets": {{ cr }} },
+            {% set cr=cr+1 %}
+            {% endif %}
+            { "name": "nombre", "targets": {{ cr }} },
+            {% set cr=cr+1 %}
+            { "name": "apellidos", "targets": {{ cr }} },
+            {% set cr=cr+1 %}
+            { "name": "carnet", "targets": {{ cr }} },
+            {% set cr=cr+1 %}
+            { "name": "pasaporte", "targets": {{ cr }} },
+            {% set cr=cr+1 %}
+            { "name": "edad", "targets": {{ cr }} },
+            {% set cr=cr+1 %}
+            { "name": "riesgo", "targets":{{ cr }} },
+            {% set c=cr+1 %}
+            { "name": "provincia", "targets":{{ cr }} },
+            {% set c=cr+1 %}
+            { "name": "municipio", "targets": {{ cr }} },
+            {% set c=cr+1 %}
+            { "name": "area", "targets": {{ cr }} },
+            {% set c=cr+1 %}
+            {% if is_granted("ROLE_AREA") %}
+            { "name": "consultorio", "targets": {{ cr }} },
+            {% set c=cr+1 %}
+            { "name": "direccion", "targets": {{ cr }} },
+            {% set c=cr+1 %}
+            {% endif %}
+            { "name": "centro", "targets": {{ cr }} },
+            {% set c=cr+1 %}
+            { "name": "sala", "targets": {{ cr }} },
+            {% set c=cr+1 %}
+            { "name": "cama", "targets": {{ cr }} },
+            {% set c=cr+1 %}
+            { "name": "transporte_sanitario", "targets":  {{ cr }} },
+            {% set c=cr+1 %}
+
+            {% if is_granted("ROLE_COORDINADOR_MUNICIPAL") or is_granted("ROLE_COORDINADOR_PROVINCIAL") %}
+            { "name": "observaciones", "targets": {{ cr }} },
+            {% set cr=cr+1 %}
+            {% endif %}
+            { "name": "acciones", "targets": {{ cr }} }
+
+        ],
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+
+                $( 'input', this.header() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+
+    {% endif %}
 </script>
 <script>
 
