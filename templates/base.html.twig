@@ -306,7 +306,7 @@
 
   var tablap=  $("#pacientes").DataTable({
         searchDelay: 1000,
-      aaSorting:[[0,'asc']],
+
         lengthMenu: [
           [ 10, 25, 50,100,500 ],
           [ '10', '25', '50 ','100','500' ]
@@ -320,7 +320,7 @@
         language: {
             "url": "{{  asset('plugins/datatables.net/Spanish.json') }}"
         },
-        order: [[ 0, "desc" ]],
+        order: [[ 0, "asc" ]],
         processing: true,
         serverSide: true,
         ajax: {"url":"{{ path('data_demand') }}",
