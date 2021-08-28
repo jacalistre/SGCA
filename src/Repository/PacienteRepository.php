@@ -282,8 +282,9 @@ class PacienteRepository extends ServiceEntityRepository
         if (!empty($orders)) {
             $sql .= $orders;
         }
-        $sql .= " limit " . $start . "," . $length;
 
+            $sql .= " limit " . $start . "," . $length;
+        
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata('App\Entity\Paciente', 'p');
 

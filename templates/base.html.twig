@@ -305,8 +305,15 @@
     {% else %}
 
   var tablap=  $("#pacientes").DataTable({
-        searchDelay: 1000,
-
+        searchDelay: 1000,lengthMenu: [
+          [ 10, 25, 50,100,500 ],
+          [ '10', '25', '50 ','100','500' ]
+      ],
+      dom: "Blfrtip",
+      buttons: [ {extend: "excel", className: "fa fa-save"}, {
+          //    extend: "pdfHtml5",
+          className: "btn-sm"
+      }, {extend: "print", className: "fa fa-print"},{extend: "pdf", className: "fa fa-save"}],
         responsive: 0,
         language: {
             "url": "{{  asset('plugins/datatables.net/Spanish.json') }}"
