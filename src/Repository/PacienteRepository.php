@@ -82,33 +82,33 @@ class PacienteRepository extends ServiceEntityRepository
         }
         if ($usuario->getRoles() == "ROLE_AREA") {
             // $sql .= "inner join ingreso i on p.id=i.paciente_id where (i.usuario_id=:val or p.area_id=:val1) ";
-            $sql .= "where (ig.usuario_id=:val or p.area_id=:val1) ".$sqlfilt;
+            $sql .= "where (ig.usuario_id= :valf or p.area_id=:n ) ";
 
             // $sqlcount .= "inner join ingreso i on p.id=i.paciente_id where (i.usuario_id=:val or p.area_id=:val1) ";
-            $sqlcount .= " where (ig.usuario_id=:val or p.area_id=:val1) ".$sqlfilt;
+            $sqlcount .= "where ( ig.usuario_id= :valf or p.area_id= :n ) ";
 
-            $parametros["val"] = $usuario->getId();
-            $parametros["val1"] = $usuario->getArea()->getId();
+            $parametros["valf"] = $usuario->getId();
+            $parametros["n"] = $usuario->getArea()->getId();
 
         } else if ($usuario->getRoles() == "ROLE_CENTRO" || $usuario->getRoles() == "ROLE_HOSPITAL") {
             //  $sql .= "inner join ingreso i on p.id=i.paciente_id WHERE (i.centro_id=:val and (i.estado like 'Ingresado' or i.estado like 'Pendiente' or i.estado like '%Pendiente Hospital%' or i.estado like '%Pendiente Remision%' or ( i.estado like '%Alta%' and i.fecha_transportado is null))";
-            $sql .= " WHERE ig.centro_id=:val and (ig.estado like 'Ingresado' or ig.estado like 'Pendiente' or ig.estado like '%Pendiente Hospital%' or ig.estado like '%Pendiente Remision%' or ( ig.estado like '%Alta%' and ig.fecha_transportado is null)) ".$sqlfilt;
+            $sql .= " WHERE ig.centro_id=:val and (ig.estado like 'Ingresado' or ig.estado like 'Pendiente' or ig.estado like '%Pendiente Hospital%' or ig.estado like '%Pendiente Remision%' or ( ig.estado like '%Alta%' and ig.fecha_transportado is null)) ";
 
             //  $sqlcount .= "inner join ingreso i on p.id=i.paciente_id WHERE (i.centro_id=:val and (i.estado like 'Ingresado' or i.estado like 'Pendiente' or i.estado like '%Pendiente Hospital%' or i.estado like '%Pendiente Remision%' or ( i.estado like '%Alta%' and i.fecha_transportado is null))";
-            $sqlcount .= " WHERE ig.centro_id=:val and (ig.estado like 'Ingresado' or ig.estado like 'Pendiente' or ig.estado like '%Pendiente Hospital%' or ig.estado like '%Pendiente Remision%' or ( ig.estado like '%Alta%' and ig.fecha_transportado is null))".$sqlfilt;
+            $sqlcount .= " WHERE ig.centro_id=:val and (ig.estado like 'Ingresado' or ig.estado like 'Pendiente' or ig.estado like '%Pendiente Hospital%' or ig.estado like '%Pendiente Remision%' or ( ig.estado like '%Alta%' and ig.fecha_transportado is null))";
 
             $parametros["val"] = $usuario->getCentro()->getId();
         } else if ($usuario->getRoles() == "ROLE_COORDINADOR_MUNICIPAL" or $usuario->getRoles()=="ROLE_ADMIN_MUNICIPAL") {
             // $sql .= "inner join ingreso i on p.id=i.paciente_id inner join usuario u on i.usuario_id= u.id where (p.municipio_id=:val or u.municipio_id=:val)";
-            $sql .= " left join usuario u on ig.usuario_id= u.id where (p.municipio_id=:val or u.municipio_id=:val)".$sqlfilt;
-            $sqlcount .= " left join usuario u on ig.usuario_id= u.id where (p.municipio_id=:val or u.municipio_id=:val)".$sqlfilt;
+            $sql .= " left join usuario u on ig.usuario_id= u.id where (p.municipio_id=:val or u.municipio_id=:val)";
+            $sqlcount .= " left join usuario u on ig.usuario_id= u.id where (p.municipio_id=:val or u.municipio_id=:val)";
 
             // $sqlcount .= "inner join ingreso i on p.id=i.paciente_id inner join usuario u on i.usuario_id= u.id where (p.municipio_id=:val or u.municipio_id=:val)";
             $parametros["val"] = $usuario->getMunicipio()->getId();
         } else if ($usuario->getRoles() == "ROLE_COORDINADOR_PROVINCIAL" || $usuario->getRoles() == "ROLE_LABORATORIO") {
             //$sql .= "inner join ingreso i on p.id=i.paciente_id inner join usuario u on i.usuario_id= u.id where (p.provincia_id=:val or u.provincia_id=:val)";
-            $sql .= "left join usuario u on ig.usuario_id= u.id where (p.provincia_id=:val or u.provincia_id=:val)".$sqlfilt;
-            $sqlcount .= "left join usuario u on ig.usuario_id= u.id where (p.provincia_id=:val or u.provincia_id=:val)".$sqlfilt;
+            $sql .= "left join usuario u on ig.usuario_id= u.id where (p.provincia_id=:val or u.provincia_id=:val)";
+            $sqlcount .= "left join usuario u on ig.usuario_id= u.id where (p.provincia_id=:val or u.provincia_id=:val)";
 
             //$sqlcount .= "inner join ingreso i on p.id=i.paciente_id inner join usuario u on i.usuario_id= u.id where (p.provincia_id=:val or u.provincia_id=:val)";
             $parametros["val"] = $usuario->getProvincia()->getId();
@@ -116,8 +116,9 @@ class PacienteRepository extends ServiceEntityRepository
         $rsm1 = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm1->addEntityResult('App\Entity\Paciente', 'p');
         $rsm1->addFieldResult("p", "cant", "id");
-        $recodsTotal = $this->getEntityManager()->createNativeQuery($sqlcount, $rsm1)->getResult();
-
+        $recodsTotal = $this->getEntityManager()->createNativeQuery($sqlcount, $rsm1)->setParameters($parametros)->getResult();
+$sql.=$sqlfilt;
+$sqlcount.=$sqlfilt;
 
         $sqlFilter = "";
         //Busqueda general en todas las columnas OR
@@ -136,7 +137,7 @@ class PacienteRepository extends ServiceEntityRepository
 
                     } else
                         if ($c['name'] == "centro") {
-                            $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " ig.nombre  like :gsearch";
+                            $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " (ig.nombre  like :gsearch and ig.estado not like '%alta%')";
 
                         }  else
                             if ($c['name'] == "consultorio") {
