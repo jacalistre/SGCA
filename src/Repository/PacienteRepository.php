@@ -113,6 +113,12 @@ class PacienteRepository extends ServiceEntityRepository
             //$sqlcount .= "inner join ingreso i on p.id=i.paciente_id inner join usuario u on i.usuario_id= u.id where (p.provincia_id=:val or u.provincia_id=:val)";
             $parametros["val"] = $usuario->getProvincia()->getId();
         }
+        $rsm1 = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm1->addEntityResult('App\Entity\Paciente', 'p');
+        $rsm1->addFieldResult("p", "cant", "id");
+        $recodsTotal = $this->getEntityManager()->createNativeQuery($sqlcount, $rsm1)->getResult();
+
+
         $sqlFilter = "";
         //Busqueda general en todas las columnas OR
         if ($general_search != null) {
@@ -284,17 +290,13 @@ class PacienteRepository extends ServiceEntityRepository
         }
 
             $sql .= " limit " . $start . "," . $length;
-        
+
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata('App\Entity\Paciente', 'p');
 
         $items = $this->getEntityManager()->createNativeQuery($sql, $rsm)->setParameters($parametros)->getResult();
 
-        $rsm1 = new ResultSetMappingBuilder($this->getEntityManager());
-        $rsm1->addEntityResult('App\Entity\Paciente', 'p');
-        $rsm1->addFieldResult("p", "cant", "id");
-        $recodsTotal = $this->getEntityManager()->createNativeQuery("Select count(p.id) as cant  from paciente p", $rsm1)->getResult();
-        $recodsFiltered = $this->getEntityManager()->createNativeQuery($sqlcount, $rsm1)->setParameters($parametros)->getResult();
+         $recodsFiltered = $this->getEntityManager()->createNativeQuery($sqlcount, $rsm1)->setParameters($parametros)->getResult();
 
         return ["items" => $items, "recordsTotal" => $recodsTotal[0]->getId(), "recordsFiltered" => $recodsFiltered[0]->getId()];
     }
