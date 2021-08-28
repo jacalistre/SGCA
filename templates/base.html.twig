@@ -305,7 +305,9 @@
     {% else %}
 
   var tablap=  $("#pacientes").DataTable({
-        searchDelay: 1000,lengthMenu: [
+        searchDelay: 1000,
+      aaSorting:[[0,'asc']],
+        lengthMenu: [
           [ 10, 25, 50,100,500 ],
           [ '10', '25', '50 ','100','500' ]
       ],
