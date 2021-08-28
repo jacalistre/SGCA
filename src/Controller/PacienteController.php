@@ -153,7 +153,7 @@ class PacienteController extends AbstractController
 
         }
         if ($form->isSubmitted() && $form->isValid()) {
-             if($paciente->getCi()==null && $paciente->getPasaporte()==null){
+             if($paciente->getCarnet()==null && $paciente->getPasaporte()==null){
                  $this->addFlash("error", "El paciente debe tener CI o Pasaporte");
                  return $this->render('paciente/new.html.twig', [
                      'paciente' => $paciente,
