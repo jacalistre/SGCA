@@ -136,8 +136,8 @@ $sqlcount.=$sqlfilt;
                         $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " m.nombre  like :gsearch";
 
                     } else
-                        if ($c['name'] == "centro") {
-                            $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " (ig.nombre  like :gsearch and ig.estado not like '%alta%')";
+                        if ($c['name'] == "centro" ) {
+                            $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " (ig.nombre  like :gsearch and ig.estado not like '%alta%' and ig.estado not like '%fallecido%')";
 
                         }  else
                             if ($c['name'] == "consultorio") {
@@ -149,11 +149,11 @@ $sqlcount.=$sqlfilt;
 
                                 }  else
                             if ($c['name'] == "sala") {
-                                $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " ig.salan  like :gsearch";
+                                $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " (ig.salan  like :gsearch and ig.estado not like '%alta%' and ig.estado not like '%fallecido%')";
 
                             } else
                                 if ($c['name'] == "cama") {
-                                    $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " ig.numero  like :gsearch";
+                                    $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " (ig.numero  like :gsearch and ig.estado not like '%alta%' and ig.estado not like '%fallecido%')";
 
                                 }else
                             if ($c['name'] == "area") {
@@ -201,15 +201,15 @@ $sqlcount.=$sqlfilt;
                                 $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
                             } else
                                 if ($c['name'] == "centro") {
-                                    $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " ig.nombre like :" . $c['name'] . "";
+                                    $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " (ig.nombre like :" . $c['name'] . " and ig.estado not like '%alta%' and ig.estado not like '%fallecido%')";
                                     $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
                                 }else
                                     if ($c['name'] == "sala") {
-                                        $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " ig.salan like :" . $c['name'] . "";
+                                        $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " (ig.salan like :" . $c['name'] . " and ig.estado not like '%alta%' and ig.estado not like '%fallecido%')";
                                         $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
                                     }else
                                         if ($c['name'] == "cama") {
-                                            $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " ig.numero like :" . $c['name'] . "";
+                                            $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " (ig.numero like :" . $c['name'] . " and ig.estado not like '%alta%' and ig.estado not like '%fallecido%')";
                                             $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
                                         }else {
                                 $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . $c['name'] . " like :" . $c['name'] . "";
