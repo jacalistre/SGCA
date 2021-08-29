@@ -162,7 +162,7 @@ $sqlcount.=$sqlfilt;
                             } else if ($c['name'] == "nombre") {
                                 $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " p.nombre  like :gsearch";
                             } else {
-                                $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . $c['name'] . " like :gsearch";
+                                $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " p.".$c['name'] . " like :gsearch";
                             }
             }
             $sqlFilter .= ")";
@@ -212,7 +212,7 @@ $sqlcount.=$sqlfilt;
                                             $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " (ig.numero like :" . $c['name'] . " and ig.estado not like '%alta%' and ig.estado not like '%fallecido%')";
                                             $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
                                         }else {
-                                $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . $c['name'] . " like :" . $c['name'] . "";
+                                $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") ." p.". $c['name'] . " like :" . $c['name'] . "";
 
                                 $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
 
@@ -282,7 +282,7 @@ $sqlcount.=$sqlfilt;
                 $orders .= (empty($orders) ? " ORDER BY " : ",") . " ig.numero " . $o['dir'];
 
             }else {
-                $orders .= (empty($orders) ? " ORDER BY " : ",") . $columns[$o['column']]['name'] . " " . $o['dir'];
+                $orders .= (empty($orders) ? " ORDER BY " : ",") . " p.".$columns[$o['column']]['name'] . " " . $o['dir'];
 
             }
         }
