@@ -141,7 +141,7 @@ $sqlcount.=$sqlfilt;
 
                         }  else
                             if ($c['name'] == "consultorio") {
-                                $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " l.nombre  like :gsearch";
+                                $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " n.nombre  like :gsearch";
 
                             } else
                                 if ($c['name'] == "direccion") {
@@ -192,7 +192,7 @@ $sqlcount.=$sqlfilt;
                             $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
                         }  else
                             if ($c['name'] == "consultorio") {
-                                $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " l.nombre like :" . $c['name'] . "";
+                                $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " n.nombre like :" . $c['name'] . "";
                                 $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
                             } else
                                 if ($c['name'] == "direccion") {
@@ -277,7 +277,7 @@ $sqlcount.=$sqlfilt;
                 $orders .= (empty($orders) ? " ORDER BY " : ",") . " ig.nombre " . $o['dir'];
 
             } else if ($columns[$o['column']]['name'] == "consultorio") {
-                $orders .= (empty($orders) ? " ORDER BY " : ",") . " l.nombre " . $o['dir'];
+                $orders .= (empty($orders) ? " ORDER BY " : ",") . " n.nombre " . $o['dir'];
 
             }  else if ($columns[$o['column']]['name'] == "direccion") {
                 $orders .= (empty($orders) ? " ORDER BY " : ",") . " p.direccion_res,p.direccion_ci " . $o['dir'];
