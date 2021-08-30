@@ -161,6 +161,9 @@ $sqlcount.=$sqlfilt;
 
                             } else if ($c['name'] == "nombre") {
                                 $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " p.nombre  like :gsearch";
+                            }else if ($c['name'] == "fecha_confirmado") {
+                                $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") .$c['name'] . " like :gsearch";
+
                             } else {
                                 $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " p.".$c['name'] . " like :gsearch";
                             }
@@ -210,6 +213,10 @@ $sqlcount.=$sqlfilt;
                                     }else
                                         if ($c['name'] == "cama") {
                                             $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " (ig.numero like :" . $c['name'] . " and ig.estado not like '%alta%' and ig.estado not like '%fallecido%')";
+                                            $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
+                                        }else if($c['name']=="fecha_confirmado"){
+                                            $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . $c['name'] . " like :" . $c['name'] . "";
+
                                             $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
                                         }else {
                                 $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") ." p.". $c['name'] . " like :" . $c['name'] . "";
@@ -280,6 +287,9 @@ $sqlcount.=$sqlfilt;
 
             } else if ($columns[$o['column']]['name'] == "cama") {
                 $orders .= (empty($orders) ? " ORDER BY " : ",") . " ig.numero " . $o['dir'];
+
+            }else if ($columns[$o['column']]['name'] == "fecha_confirmado") {
+                $orders .= (empty($orders) ? " ORDER BY " : ",") .$columns[$o['column']]['name'] . " " . $o['dir'];
 
             }else {
                 $orders .= (empty($orders) ? " ORDER BY " : ",") . " p.".$columns[$o['column']]['name'] . " " . $o['dir'];
