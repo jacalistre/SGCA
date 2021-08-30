@@ -161,7 +161,7 @@ $sqlcount.=$sqlfilt;
 
                             } else if ($c['name'] == "nombre") {
                                 $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " p.nombre  like :gsearch";
-                            }else if ($c['name'] == "fecha_confirmado") {
+                            }else if ($c['name'] == "fecha_confirmacion") {
                                 $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") .$c['name'] . " like :gsearch";
 
                             } else {
@@ -214,7 +214,7 @@ $sqlcount.=$sqlfilt;
                                         if ($c['name'] == "cama") {
                                             $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . " (ig.numero like :" . $c['name'] . " and ig.estado not like '%alta%' and ig.estado not like '%fallecido%')";
                                             $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
-                                        }else if($c['name']=="fecha_confirmado"){
+                                        }else if($c['name']=="fecha_confirmacion"){
                                             $sqlFilterC .= (empty($sqlFilterC) ? "" : " AND ") . $c['name'] . " like :" . $c['name'] . "";
 
                                             $parametros[$c['name']] = "%" . $c['search']['value'] . "%";
@@ -288,7 +288,7 @@ $sqlcount.=$sqlfilt;
             } else if ($columns[$o['column']]['name'] == "cama") {
                 $orders .= (empty($orders) ? " ORDER BY " : ",") . " ig.numero " . $o['dir'];
 
-            }else if ($columns[$o['column']]['name'] == "fecha_confirmado") {
+            }else if ($columns[$o['column']]['name'] == "fecha_confirmacion") {
                 $orders .= (empty($orders) ? " ORDER BY " : ",") .$columns[$o['column']]['name'] . " " . $o['dir'];
 
             }else {
