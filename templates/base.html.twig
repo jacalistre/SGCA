@@ -21,17 +21,18 @@
 
     <link href="{{ asset('plugins/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/datatables.net-buttons-bs/css/buttons.bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('plugins/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('plugins/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css') }}"
+          rel="stylesheet">
     <link href="{{ asset('plugins/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/datatables.net-scroller-bs/css/scroller.bootstrap.min.css') }}" rel="stylesheet">
     <!-- Select2 -->
     <link href="{{ asset('plugins/select2/dist/css/select2.css') }}" rel="stylesheet">
 
     <style>
-    .dt-buttons{
-        float: right;
-    }
-</style>
+        .dt-buttons {
+            float: right;
+        }
+    </style>
     {% block  styles %}
 
     {% endblock %}
@@ -65,32 +66,36 @@
 
                             </li>
                             {% if not is_granted('ROLE_ADMIN_MUN') %}
-                            <li><a><i class="fa fa-users"></i> Pacientes <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    {% if is_granted("ROLE_AREA") or is_granted("ROLE_HOSPITAL") or is_granted("ROLE_LABORATORIO") %}
-                                    <li><a href="{{ path('paciente_new') }}">Insertar</a></li>
-                                    {% endif %}
+                                <li><a><i class="fa fa-users"></i> Pacientes <span
+                                                class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        {% if is_granted("ROLE_AREA") or is_granted("ROLE_HOSPITAL") or is_granted("ROLE_LABORATORIO") %}
+                                            <li><a href="{{ path('paciente_new') }}">Insertar</a></li>
+                                        {% endif %}
 
-                                    <li><a href="{{ path('paciente_index') }}">Gestionar</a></li>
-                                    {% set d="now"| date('d')
-                                    %}
-                                    {% set m="now"| date('m') %}
-                                    {% set y="now"| date('y') %}
-                                   <li><a href="{{ path('paciente_evolutivo',{'d':d,'m':m,'y':y}) }}">Evolutivo</a></li>
-                                </ul>
-                            </li>
+                                        <li><a href="{{ path('paciente_index') }}">Gestionar</a></li>
+                                        {% set d="now"| date('d') %}
+                                        {% set m="now"| date('m') %}
+                                        {% set y="now"| date('y') %}
+                                        <li><a href="{{ path('paciente_evolutivo',{'d':d,'m':m,'y':y}) }}">Evolutivo</a>
+                                        </li>
+                                        {% if is_granted('ROLE_LABORATORIO') %}
+                                            <li><a href="{{ path('importar_pacientes') }}">Importar resultado</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
                             {% endif %}
-                            {% if not is_granted('ROLE_AREA') and not is_granted('ROLE_LABORATORIO')  %}
-                            <li><a><i class="fa fa-hospital-o"></i> Centro <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                    <li><a href="{{ path('centro_new') }}">Insertar</a></li>
-                                    {% endif %}
-                                    <li><a href="{{ path('centro_index') }}">Gestionar</a></li>
-                                    <li><a href="{{ path('sala_index') }}">Gestionar Salas</a></li>
-                                    <li><a href="{{ path('cama_index') }}">Gestionar Camas</a></li>
-                                </ul>
-                            </li>
+                            {% if not is_granted('ROLE_AREA') and not is_granted('ROLE_LABORATORIO') %}
+                                <li><a><i class="fa fa-hospital-o"></i> Centro <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <li><a href="{{ path('centro_new') }}">Insertar</a></li>
+                                        {% endif %}
+                                        <li><a href="{{ path('centro_index') }}">Gestionar</a></li>
+                                        <li><a href="{{ path('sala_index') }}">Gestionar Salas</a></li>
+                                        <li><a href="{{ path('cama_index') }}">Gestionar Camas</a></li>
+                                    </ul>
+                                </li>
                             {% endif %}
                             {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ADMIN_MUN') %}
                                 <li><a><i class="fa fa-cogs"></i> Configuracion <span class="fa fa-chevron-down"></span></a>
@@ -98,26 +103,27 @@
                                         <li><a href="{{ path('usuario_index') }}">Usuarios</a></li>
                                         {% if not is_granted('ROLE_ADMIN_MUN') %}
 
-                                        <li><a href="{{ path('estado_cama_index') }}">Gestionar Estado de las Camas</a>
-                                        </li>
+                                            <li><a href="{{ path('estado_cama_index') }}">Gestionar Estado de las
+                                                    Camas</a>
+                                            </li>
                                         {% endif %}
                                         <li><a href="{{ path('area_salud_index') }}">Gestionar Areas</a></li>
-                                       {% if not is_granted('ROLE_ADMIN_MUN') %}
-                                        <li><a href="{{ path('provincia_index') }}">Gestionar Provincias</a></li>
+                                        {% if not is_granted('ROLE_ADMIN_MUN') %}
+                                            <li><a href="{{ path('provincia_index') }}">Gestionar Provincias</a></li>
 
-                                        <li><a href="{{ path('municipio_index') }}">Gestionar Municipios</a></li>
+                                            <li><a href="{{ path('municipio_index') }}">Gestionar Municipios</a></li>
                                         {% endif %}
                                         <li><a href="{{ path('consultorio_index') }}">Gestionar Consultorio</a></li>
                                     </ul>
                                 </li>
                             {% endif %}
                             {% if not is_granted('ROLE_ADMIN_MUN') %}
-                            <li><a><i class="fa fa-bell"></i> Alertas <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    <li><a href="{{ path('notificacion_index') }}">Gestionar</a></li>
-                                </ul>
-                            </li>
-{% endif %}
+                                <li><a><i class="fa fa-bell"></i> Alertas <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ path('notificacion_index') }}">Gestionar</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
 
@@ -163,28 +169,28 @@
                                             class="fa fa-sign-out pull-right"></i> Salir</a>
                             </div>
                         </li>
-{% if not is_granted('ROLE_ADMIN_MUN') %}
-                        <li role="presentation" class="nav-item dropdown open">
-                            <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1"
-                               data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-bell-o"></i>
-                                <span class="badge bg-green" id="notice-cant"></span>
-                            </a>
-                            <ul class="dropdown-menu list-unstyled msg_list" role="menu"
-                                aria-labelledby="navbarDropdown1" >
-                               <div id="notice-content">
+                        {% if not is_granted('ROLE_ADMIN_MUN') %}
+                            <li role="presentation" class="nav-item dropdown open">
+                                <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1"
+                                   data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="badge bg-green" id="notice-cant"></span>
+                                </a>
+                                <ul class="dropdown-menu list-unstyled msg_list" role="menu"
+                                    aria-labelledby="navbarDropdown1">
+                                    <div id="notice-content">
 
-                               </div>
-                                <li class="nav-item">
-                                    <div class="text-center">
-                                        <a class="dropdown-item" href="{{ path('notificacion_index') }}">
-                                            <strong>Ver todas</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
                                     </div>
-                                </li>
-                            </ul>
-                        </li>
+                                    <li class="nav-item">
+                                        <div class="text-center">
+                                            <a class="dropdown-item" href="{{ path('notificacion_index') }}">
+                                                <strong>Ver todas</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
                         {% endif %}
                     </ul>
                 </nav>
@@ -263,6 +269,8 @@
 <script src="{{ asset('plugins/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
 <script src="{{ asset('plugins/datatables.net-scroller/js/dataTables.scroller.min.js') }}"></script>
 <script src="{{ asset('plugins/jszip/dist/jszip.min.js') }}"></script>
+<script src="{{ asset('plugins/jszip/dist/xlsx.full.min.js') }}"></script>
+
 <script src="{{ asset('plugins/pdfmake/build/pdfmake.min.js') }}"></script>
 <script src="{{ asset('plugins/pdfmake/build/vfs_fonts.js') }}"></script>
 
@@ -275,120 +283,121 @@
 <!-- Custom Theme Scripts -->
 <script src={{ asset("local/js/custom.min.js") }}></script>
 <script>
-    $('table thead th').each( function () {
+    $('table thead th').each(function () {
         var title = $(this).text();
 
-        $(this).html( '<b>'+title+'</b><input style="width: 80px" type="text" placeholder="Buscar" />' );
-    } );
-    {%  if pacientes is not defined %}
+        $(this).html('<b>' + title + '</b><input style="width: 80px" type="text" placeholder="Buscar" />');
+    });
+    {% if pacientes is not defined %}
     $("table").DataTable({
         dom: "Blfrtip",
-        buttons: [ {extend: "excel", className: "fa fa-save"}, {
-        //    extend: "pdfHtml5",
+        buttons: [{extend: "excel", className: "fa fa-save"}, {
+            //    extend: "pdfHtml5",
             className: "btn-sm"
-        }, {extend: "print", className: "fa fa-print"},{extend: "pdf", className: "fa fa-save"}],
-        responsive: 0,  initComplete: function () {
+        }, {extend: "print", className: "fa fa-print"}, {extend: "pdf", className: "fa fa-save"}],
+        responsive: 0, initComplete: function () {
             // Apply the search
-            this.api().columns().every( function () {
+            this.api().columns().every(function () {
                 var that = this;
 
-                $( 'input', this.header() ).on( 'keyup change clear', function () {
-                    if ( that.search() !== this.value ) {
+                $('input', this.header()).on('keyup change clear', function () {
+                    if (that.search() !== this.value) {
                         that
-                            .search( this.value )
+                            .search(this.value)
                             .draw();
                     }
-                } );
-            } );
+                });
+            });
         }
     }).init();
     {% else %}
 
-  var tablap=  $("#pacientes").DataTable({
+    var tablap = $("#pacientes").DataTable({
         searchDelay: 1000,
 
         lengthMenu: [
-          [ 10, 25, 50,100,500 ],
-          [ '10', '25', '50 ','100','500' ]
-      ],
-      dom: "Blfrtip",
-      buttons: [ {extend: "excel", className: "fa fa-save"}, {
-          //    extend: "pdfHtml5",
-          className: "btn-sm"
-      }, {extend: "print", className: "fa fa-print"},{extend: "pdf", className: "fa fa-save"}],
+            [10, 25, 50, 100, 500],
+            ['10', '25', '50 ', '100', '500']
+        ],
+        dom: "Blfrtip",
+        buttons: [{extend: "excel", className: "fa fa-save"}, {
+            //    extend: "pdfHtml5",
+            className: "btn-sm"
+        }, {extend: "print", className: "fa fa-print"}, {extend: "pdf", className: "fa fa-save"}],
         responsive: 0,
         language: {
-            "url": "{{  asset('plugins/datatables.net/Spanish.json') }}"
+            "url": "{{ asset('plugins/datatables.net/Spanish.json') }}"
         },
-        order: [[ 0, "asc" ]],
+        order: [[0, "asc"]],
         processing: true,
         serverSide: true,
-        ajax: {"url":"{{ path('data_demand') }}",
-            "type":"POST",
-            "data":function(data){
-            data.filtro=filtro;
+        ajax: {
+            "url": "{{ path('data_demand') }}",
+            "type": "POST",
+            "data": function (data) {
+                data.filtro = filtro;
             }
         },
         columns: [
             {% set cr=0 %}
             {% if is_granted("ROLE_AREA") %}
 
-            { "name": "fecha_confirmacion", "targets": {{ cr }} },
+            {"name": "fecha_confirmacion", "targets": {{ cr }} },
             {% set cr=cr+1 %}
             {% endif %}
-            { "name": "nombre", "targets": {{ cr }} },
+            {"name": "nombre", "targets": {{ cr }} },
             {% set cr=cr+1 %}
-            { "name": "apellidos", "targets": {{ cr }} },
+            {"name": "apellidos", "targets": {{ cr }} },
             {% set cr=cr+1 %}
-            { "name": "carnet", "targets": {{ cr }} },
+            {"name": "carnet", "targets": {{ cr }} },
             {% set cr=cr+1 %}
-            { "name": "pasaporte", "targets": {{ cr }} },
+            {"name": "pasaporte", "targets": {{ cr }} },
             {% set cr=cr+1 %}
-            { "name": "edad", "targets": {{ cr }} },
+            {"name": "edad", "targets": {{ cr }} },
             {% set cr=cr+1 %}
-            { "name": "riesgo", "targets":{{ cr }} },
+            {"name": "riesgo", "targets":{{ cr }} },
             {% set c=cr+1 %}
-            { "name": "provincia", "targets":{{ cr }} },
+            {"name": "provincia", "targets":{{ cr }} },
             {% set c=cr+1 %}
-            { "name": "municipio", "targets": {{ cr }} },
+            {"name": "municipio", "targets": {{ cr }} },
             {% set c=cr+1 %}
-            { "name": "area", "targets": {{ cr }} },
+            {"name": "area", "targets": {{ cr }} },
             {% set c=cr+1 %}
             {% if is_granted("ROLE_AREA") %}
-            { "name": "consultorio", "targets": {{ cr }} },
+            {"name": "consultorio", "targets": {{ cr }} },
             {% set c=cr+1 %}
-            { "name": "direccion", "targets": {{ cr }} },
+            {"name": "direccion", "targets": {{ cr }} },
             {% set c=cr+1 %}
             {% endif %}
-            { "name": "centro", "targets": {{ cr }} },
+            {"name": "centro", "targets": {{ cr }} },
             {% set c=cr+1 %}
-            { "name": "sala", "targets": {{ cr }} },
+            {"name": "sala", "targets": {{ cr }} },
             {% set c=cr+1 %}
-            { "name": "cama", "targets": {{ cr }} },
+            {"name": "cama", "targets": {{ cr }} },
             {% set c=cr+1 %}
-            { "name": "transporte_sanitario", "targets":  {{ cr }} },
+            {"name": "transporte_sanitario", "targets":  {{ cr }} },
             {% set c=cr+1 %}
 
             {% if is_granted("ROLE_COORDINADOR_MUNICIPAL") or is_granted("ROLE_COORDINADOR_PROVINCIAL") %}
-            { "name": "observaciones", "targets": {{ cr }} },
+            {"name": "observaciones", "targets": {{ cr }} },
             {% set cr=cr+1 %}
             {% endif %}
-            { "name": "acciones", "targets": {{ cr }} }
+            {"name": "acciones", "targets": {{ cr }} }
 
         ],
         initComplete: function () {
             // Apply the search
-            this.api().columns().every( function () {
+            this.api().columns().every(function () {
                 var that = this;
 
-                $( 'input', this.header() ).on( 'keyup change clear', function () {
-                    if ( that.search() !== this.value ) {
+                $('input', this.header()).on('keyup change clear', function () {
+                    if (that.search() !== this.value) {
                         that
-                            .search( this.value )
+                            .search(this.value)
                             .draw();
                     }
-                } );
-            } );
+                });
+            });
         }
     });
 
@@ -578,9 +587,9 @@
             });
         }
     }
-#}
+    #}
     {% if not is_granted('ROLE_ADMIN_MUN') %}
-    function getNotifications(){
+    function getNotifications() {
         $.ajax({
             type: "POST",
             url: "{{ path('notificacion_get') }}",
@@ -589,24 +598,24 @@
             success: function (data) {
                 //console.warn(data[0]);
                 $("#notice-cant").html(data.cant);
-                html="";
-                for(i=0;i<data.cant;i++){
-                    if(data[i]==undefined){
+                html = "";
+                for (i = 0; i < data.cant; i++) {
+                    if (data[i] == undefined) {
                         break;
                     }
-                    fechas=data[i].fecha.date.split(" ");
-                    today= new Date();
-                    today=today.getFullYear()+"-"+((today.getMonth()+1)<10?"0":"")+(today.getMonth()+1)+"-"+today.getDate();
+                    fechas = data[i].fecha.date.split(" ");
+                    today = new Date();
+                    today = today.getFullYear() + "-" + ((today.getMonth() + 1) < 10 ? "0" : "") + (today.getMonth() + 1) + "-" + today.getDate();
 
-                        fechaw=(fechas[0]==today?fechas[1].split(".")[0]:fechas[0]);
-                    html+='<li class="nav-item">\n' +
-                        '                                    <a class="dropdown-item" onclick="MarcarLeida('+data[i].id+')">\n' +
+                    fechaw = (fechas[0] == today ? fechas[1].split(".")[0] : fechas[0]);
+                    html += '<li class="nav-item">\n' +
+                        '                                    <a class="dropdown-item" onclick="MarcarLeida(' + data[i].id + ')">\n' +
                         '                                        <span class=" image fa fa-user-md"></span>\n' +
                         '                                        <span>\n' +
-                        '                            <span>'+data[i].origen+'</span>\n' +
-                        '                            <span class="time">'+fechaw+'</span>\n' +
+                        '                            <span>' + data[i].origen + '</span>\n' +
+                        '                            <span class="time">' + fechaw + '</span>\n' +
                         '                          </span>\n' +
-                        '                                        <span class="message">\n' +data[i].mensaje+" " +data[i].paciente+
+                        '                                        <span class="message">\n' + data[i].mensaje + " " + data[i].paciente +
                         '                          </span>\n' +
                         '                                    </a>\n' +
                         '                                </li>';
@@ -618,10 +627,11 @@
             }
         });
     }
+
     function MarcarLeida(id) {
 
-        baseurl="{{ path('notificacion_leida',{'id':'replaceid'}) }}";
-        baseurl=baseurl.replace("replaceid",id);
+        baseurl = "{{ path('notificacion_leida',{'id':'replaceid'}) }}";
+        baseurl = baseurl.replace("replaceid", id);
 
         $.ajax({
             type: "POST",
@@ -629,17 +639,18 @@
             //  data: myusername,
             cache: false,
             success: function (data) {
-                window.location=data.url;
+                window.location = data.url;
             }
 
         });
     }
-    $(document).ready(function(){
+
+    $(document).ready(function () {
 
         getNotifications();
-        setInterval(getNotifications,15000);
-        var select=$('#acompannante');
-        if(select!=undefined && select!=null) {
+        setInterval(getNotifications, 15000);
+        var select = $('#acompannante');
+        if (select != undefined && select != null) {
             select.select2({
                 ajax: {
                     url: "{{ path('getpacientes') }}",
@@ -647,7 +658,7 @@
                     data: function (params) {
                         var query = {
                             busqueda: params.term,
-                            paciente:$('#data-acompannante').val()
+                            paciente: $('#data-acompannante').val()
 
                         }
 
@@ -658,42 +669,42 @@
             });
         }
 
-      /*  $('.provincia').change(getMunicipio);
-        $('.municipio').change(getCentros);
-        $('.municipio').change(getAreas());
-        $('.area').change(getConsultorio());
-        $('.centro').change(getSalas);
+        /*  $('.provincia').change(getMunicipio);
+          $('.municipio').change(getCentros);
+          $('.municipio').change(getAreas());
+          $('.area').change(getConsultorio());
+          $('.centro').change(getSalas);
 
-        $('.sala').change(getCamas);*/
+          $('.sala').change(getCamas);*/
 
 
     });
     {% endif %}
 </script>
-{%  if form is defined  %}
+{% if form is defined %}
 {% if form.sala is defined and form.cama is defined %}
     <script>
 
         //tambien podemos hacer $('#') para obtener el id
-        var $sala= $('#{{ form.sala.vars.id }}');
+        var $sala = $('#{{ form.sala.vars.id }}');
 
 
         // cada vez que el usuario cambie el pais en el select
-        $sala.on('change',getCamas);
+        $sala.on('change', getCamas);
 
-        function getCamas(){
+        function getCamas() {
             // creamos la data, solo con el campo del pais,
             // ya que es el dato relevante en este caso.
             var data = $('#{{ form.sala.vars.id }}').serialize();
             // Hacemos un envío del formulario, lo que ejecutará el evento preSubmit
             // del listener AddStateFieldSubscriber,
             // y actualizará el campo state, con los estados del pais seleccionado.
-            var  $form5= $('#{{ form.sala.vars.id }}').closest('form');
+            var $form5 = $('#{{ form.sala.vars.id }}').closest('form');
             $.ajax({
-                url : $form5.attr('action'),
+                url: $form5.attr('action'),
                 type: $form5.attr('method'),
-                data : data,
-                success: function(html) {
+                data: data,
+                success: function (html) {
 
                     $('#{{ form.cama.vars.id }}').replaceWith($(html).find('#{{ form.cama.vars.id }}'));
 
@@ -708,29 +719,29 @@
     <script>
 
         //tambien podemos hacer $('#') para obtener el id
-        var $centro= $('#{{ form.centro.vars.id }}');
+        var $centro = $('#{{ form.centro.vars.id }}');
 
 
         // cada vez que el usuario cambie el pais en el select
-        $centro.on('change',getSalas);
+        $centro.on('change', getSalas);
 
-        function getSalas(){
+        function getSalas() {
             // creamos la data, solo con el campo del pais,
             // ya que es el dato relevante en este caso.
             var data = $('#{{ form.centro.vars.id }}').serialize();
             // Hacemos un envío del formulario, lo que ejecutará el evento preSubmit
             // del listener AddStateFieldSubscriber,
             // y actualizará el campo state, con los estados del pais seleccionado.
-            var  $form4= $('#{{ form.centro.vars.id }}').closest('form');
+            var $form4 = $('#{{ form.centro.vars.id }}').closest('form');
             $.ajax({
-                url : $form4.attr('action'),
+                url: $form4.attr('action'),
                 type: $form4.attr('method'),
-                data : data,
-                success: function(html) {
+                data: data,
+                success: function (html) {
 
                     $('#{{ form.sala.vars.id }}').replaceWith($(html).find('#{{ form.sala.vars.id }}'));
-                    {%  if form.cama is defined %}
-                    $('#{{ form.sala.vars.id }}').on('change',getCamas);
+                    {% if form.cama is defined %}
+                    $('#{{ form.sala.vars.id }}').on('change', getCamas);
                     {% endif %}
                 }
             });
@@ -744,30 +755,30 @@
     <script>
 
         //tambien podemos hacer $('#') para obtener el id
-        var $municipio2= $('#{{ form.municipio.vars.id }}');
+        var $municipio2 = $('#{{ form.municipio.vars.id }}');
 
 
         // cada vez que el usuario cambie el pais en el select
-        $municipio2.on('change',getCentros);
+        $municipio2.on('change', getCentros);
 
-        function getCentros(){
+        function getCentros() {
             // creamos la data, solo con el campo del pais,
             // ya que es el dato relevante en este caso.
             var data = $('#{{ form.municipio.vars.id }}').serialize();
             // Hacemos un envío del formulario, lo que ejecutará el evento preSubmit
             // del listener AddStateFieldSubscriber,
             // y actualizará el campo state, con los estados del pais seleccionado.
-            var  $form3= $('#{{ form.municipio.vars.id }}').closest('form');
+            var $form3 = $('#{{ form.municipio.vars.id }}').closest('form');
             $.ajax({
-                url : $form3.attr('action'),
+                url: $form3.attr('action'),
                 type: $form3.attr('method'),
-                data : data,
-                success: function(html) {
+                data: data,
+                success: function (html) {
 
                     $('#{{ form.centro.vars.id }}').replaceWith($(html).find('#{{ form.centro.vars.id }}'));
 
-                    {%  if form.sala is defined %}
-                    $('#{{ form.centro.vars.id }}').on('change',getSalas);
+                    {% if form.sala is defined %}
+                    $('#{{ form.centro.vars.id }}').on('change', getSalas);
                     {% endif %}
                 }
             });
@@ -780,25 +791,25 @@
     <script>
 
         //tambien podemos hacer $('#') para obtener el id
-        var $area1= $('#{{ form.area.vars.id }}');
+        var $area1 = $('#{{ form.area.vars.id }}');
 
 
         // cada vez que el usuario cambie el pais en el select
-        $area1.on('change',getConsultorios);
+        $area1.on('change', getConsultorios);
 
-        function getConsultorios(){
+        function getConsultorios() {
             // creamos la data, solo con el campo del pais,
             // ya que es el dato relevante en este caso.
             var data = $('#{{ form.area.vars.id }}').serialize();
             // Hacemos un envío del formulario, lo que ejecutará el evento preSubmit
             // del listener AddStateFieldSubscriber,
             // y actualizará el campo state, con los estados del pais seleccionado.
-            var  $form2= $('#{{ form.area.vars.id }}').closest('form');
+            var $form2 = $('#{{ form.area.vars.id }}').closest('form');
             $.ajax({
-                url : $form2.attr('action'),
+                url: $form2.attr('action'),
                 type: $form2.attr('method'),
-                data : data,
-                success: function(html) {
+                data: data,
+                success: function (html) {
 
                     $('#{{ form.consultorio.vars.id }}').replaceWith($(html).find('#{{ form.consultorio.vars.id }}'));
                 }
@@ -810,41 +821,42 @@
 
 {% if form.municipio is defined and form.area is defined %}
     <script>
-        var $municipio1= $('#{{ form.municipio.vars.id }}');
+        var $municipio1 = $('#{{ form.municipio.vars.id }}');
         //tambien podemos hacer $('#') para obtener el id
         // cada vez que el usuario cambie el pais en el select
 
-        $municipio1.on('change',getAreas );
-            function getAreas(){
+        $municipio1.on('change', getAreas);
 
-                // creamos la data, solo con el campo del pais,
-                // ya que es el dato relevante en este caso.
-                var data = $('#{{ form.municipio.vars.id }}').serialize();
-                // Hacemos un envío del formulario, lo que ejecutará el evento preSubmit
-                // del listener AddStateFieldSubscriber,
-                // y actualizará el campo state, con los estados del pais seleccionado.
-               var  $form1= $('#{{ form.municipio.vars.id }}').closest('form');
-                $.ajax({
-                    url : $form1.attr('action'),
-                    type: $form1.attr('method'),
-                    data : data,
-                    success: function(html) {
+        function getAreas() {
 
-                        $('#{{ form.area.vars.id }}').replaceWith($(html).find('#{{ form.area.vars.id }}'));
-                        {% if form.centro is defined %}
-                        $('#{{ form.centro.vars.id }}').replaceWith($(html).find('#{{ form.centro.vars.id }}'));
-                        {% endif %}
-                        {%  if form.consultorio is defined %}
-                        $('#{{ form.area.vars.id }}').on('change',getConsultorios);
-                        {% endif %}
-                    }
-                });
+            // creamos la data, solo con el campo del pais,
+            // ya que es el dato relevante en este caso.
+            var data = $('#{{ form.municipio.vars.id }}').serialize();
+            // Hacemos un envío del formulario, lo que ejecutará el evento preSubmit
+            // del listener AddStateFieldSubscriber,
+            // y actualizará el campo state, con los estados del pais seleccionado.
+            var $form1 = $('#{{ form.municipio.vars.id }}').closest('form');
+            $.ajax({
+                url: $form1.attr('action'),
+                type: $form1.attr('method'),
+                data: data,
+                success: function (html) {
+
+                    $('#{{ form.area.vars.id }}').replaceWith($(html).find('#{{ form.area.vars.id }}'));
+                    {% if form.centro is defined %}
+                    $('#{{ form.centro.vars.id }}').replaceWith($(html).find('#{{ form.centro.vars.id }}'));
+                    {% endif %}
+                    {% if form.consultorio is defined %}
+                    $('#{{ form.area.vars.id }}').on('change', getConsultorios);
+                    {% endif %}
+                }
+            });
 
         }
     </script>
 {% endif %}
 
-{% if form.provincia is defined and form.municipio is defined  and not is_granted('ROLE_ADMIN_MUN')%}
+{% if form.provincia is defined and form.municipio is defined  and not is_granted('ROLE_ADMIN_MUN') %}
     <script>
         var $provincia = $('#{{ form.provincia.vars.id }}');
         //tambien podemos hacer $('#') para obtener el id
@@ -852,7 +864,7 @@
         var $form = $provincia.closest('form');
 
         // cada vez que el usuario cambie el pais en el select
-        $provincia.on('change', function() {
+        $provincia.on('change', function () {
             // creamos la data, solo con el campo del pais,
             // ya que es el dato relevante en este caso.
             var data = $provincia.serialize();
@@ -860,13 +872,13 @@
             // del listener AddStateFieldSubscriber,
             // y actualizará el campo state, con los estados del pais seleccionado.
             $.ajax({
-                url : $form.attr('action'),
+                url: $form.attr('action'),
                 type: $form.attr('method'),
-                data : data,
-                success: function(html) {
+                data: data,
+                success: function (html) {
                     $('#{{ form.municipio.vars.id }}').replaceWith($(html).find('#{{ form.municipio.vars.id }}'));
-                    {%  if form.area is defined %}
-                    $('#{{ form.municipio.vars.id }}').on('change',getAreas);
+                    {% if form.area is defined %}
+                    $('#{{ form.municipio.vars.id }}').on('change', getAreas);
                     {% endif %}
 
                 }
