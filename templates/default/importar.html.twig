@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Importar Pacientes</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+             <div class="row">
+                 <div class="col-md-4 offset-4">
+                     <b>Archivo</b>
+                   <input type="file" id="fichero" onchange="handleFileSelect(event);">
+                     <br>
+                 </div>
+             </div>
+
+            <div class="row">
+                <div class="col-md-4 offset-4" style="text-align: right">
+                   <a href="#"  onclick="Importar(this);" class="btn btn-primary"> <span class="fa fa-cogs">Procesar</span></a>
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <table class="table table-responsive">
+                        <thead>
+                        <tr>
+
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Carnet</th>
+                            <th>Pasaporte</th>
+                            <th>Fecha de Confirmacion</th>
+                            <th>Provincia</th>
+                            <th>Municipio</th>
+                            <th>Area de Salud</th>
+                            <th>Centro</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function Importar(element){
+
+
+        }
+
+        var ExcelToJSON = function() {
+
+            this.parseExcel = function(file) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var data = e.target.result;
+                    var workbook = XLSX.read(data, {
+                        type: 'binary'
+                    });
+                    workbook.SheetNames.forEach(function(sheetName) {
+                        // Here is your object
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        info=JSON.parse(json_object);
+                        for($i=0;$i<info.length;$i++){
+                            console.warn(info[$i]);
+                        }
+
+                    })
+                };
+
+                reader.onerror = function(ex) {
+                    console.log(ex);
+                };
+
+                reader.readAsBinaryString(file);
+            };
+        };
+
+        function handleFileSelect(evt) {
+
+            var files = evt.target.files; // FileList object
+            var xl2json = new ExcelToJSON();
+            xl2json.parseExcel(files[0]);
+        }
+    </script>
+{% endblock %}
+
