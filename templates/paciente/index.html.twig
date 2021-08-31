@@ -150,7 +150,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="data-id">
                     <b>Fecha toma de muestra</b>
-                    <input id="prueba" class="date-picker form-control" placeholder="dd/mm/yyyy" type="text"
+                    <input id="prueba"  max="{{ "now"|date("Y-m-d") }}" class="date-picker form-control" placeholder="dd/mm/yyyy" type="text"
                            required="required" type="text" onfocus="this.type='date'" onmouseover="this.type='date'"
                            onclick="this.type='date'" onblur="this.type='text'">
                     <br>
