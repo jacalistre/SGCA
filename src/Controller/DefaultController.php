@@ -634,4 +634,13 @@ class DefaultController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('paciente_index');
     }
+
+
+    /**
+     * @Route("/importer", name="importar_pacientes")
+     */
+    public function importarexcel(): Response
+    {
+        return $this->render('default/importar.html.twig');
+    }
 }
