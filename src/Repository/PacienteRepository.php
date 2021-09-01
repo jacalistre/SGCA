@@ -145,7 +145,7 @@ $sqlcount.=$sqlfilt;
 
                             } else
                                 if ($c['name'] == "direccion") {
-                                    $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " (p.direccion_ci  like :gsearch or p.direccion_res like :qsearch )";
+                                    $sqlFilter .= ($sqlFilter == "(" ? "" : " OR ") . " (p.direccion_ci  like :gsearch or p.direccion_res like :gsearch )";
 
                                 }  else
                             if ($c['name'] == "sala") {
