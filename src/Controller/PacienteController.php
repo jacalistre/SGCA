@@ -188,7 +188,9 @@ class PacienteController extends AbstractController
                 $days = ($config == null || count($config) == 0 ? 5 : $config[0]->getRotacionEvolutivo());
 
                 $prueba = new Prueba();
-                $prueba->setFecha($fecha->add(new \DateInterval("P" . $days . "D")));
+                $fechai=new \DateTime('now');
+                
+                $prueba->setFecha($fechai->add(new \DateInterval("P" . $days . "D")));
                 $ingreso->addPrueba($prueba);
                 $prueba->setPaciente($paciente);
             }
