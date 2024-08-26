@@ -22,8 +22,8 @@ function SmartWizard(target, options) {
     this.loader = $('<div>Loading</div>').addClass("loader");
     this.buttons = {
         next : $('<a>'+options.labelNext+'</a>').attr("href","#").addClass("buttonNext"),
-        previous : $('<a>'+options.labelPrevious+'</a>').attr("href","#").addClass("buttonPrevious"),
-        finish  : $('<a>'+options.labelFinish+'</a>').attr("href","#").addClass("buttonFinish")
+       // previous : $('<a>'+options.labelPrevious+'</a>').attr("href","#").addClass("buttonPrevious"),
+        finish  : $('<a>'+options.labelFinish+'</a>').attr("href","#").addClass("buttonFinish").addClass("fa fa-cog btn btn-success")
     };
 
     /*
@@ -440,7 +440,7 @@ $.fn.smartWizard.defaults = {
     labelNext:'Next',
     labelPrevious:'Previous',
     labelFinish:'Finish',
-    noForwardJumping: false,
+    noForwardJumping: true,
     onLeaveStep: null, // triggers when leaving a step
     onShowStep: null,  // triggers when showing a step
     onFinish: null  // triggers when Finish button is clicked

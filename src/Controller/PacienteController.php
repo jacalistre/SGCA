@@ -189,7 +189,7 @@ class PacienteController extends AbstractController
 
                 $prueba = new Prueba();
                 $fechai=new \DateTime('now');
-                
+
                 $prueba->setFecha($fechai->add(new \DateInterval("P" . $days . "D")));
                 $ingreso->addPrueba($prueba);
                 $prueba->setPaciente($paciente);

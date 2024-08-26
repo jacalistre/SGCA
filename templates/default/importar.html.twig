@@ -12,18 +12,121 @@
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
+            <div id="wizard" class="form_wizard wizard_horizontal">
+                <ul class="wizard_steps">
+                    <li>
+                        <a href="#step-1">
+                            <span class="step_no">1</span>
+                            <span class="step_descr">
+                                              Paso 1<br/>
+                                              <small>Cargar excel</small>
+                                          </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-2">
+                            <span class="step_no">2</span>
+                            <span class="step_descr">
+                                              Paso 2<br/>
+                                              <small>Identificar columnas</small>
+                                          </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-3">
+                            <span class="step_no">3</span>
+                            <span class="step_descr">
+                                              Paso 3<br/>
+                                              <small>Relacionar columnas</small>
+                                          </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-4">
+                            <span class="step_no">4</span>
+                            <span class="step_descr">
+                                              Paso 4<br/>
+                                              <small>Comprobacion</small>
+                                          </span>
+                        </a>
+                    </li>
+                </ul>
+                <div id="step-1">
+                    <h2 class="StepTitle">Step 1 Content</h2>
 
-             <div class="row">
-                 <div class="col-md-4 offset-4">
-                     <b>Archivo</b>
-                   <input type="file" id="fichero" onchange="handleFileSelect(event);">
-                     <br>
-                 </div>
-             </div>
+                    <div class="row">
+                        <div class="col-md-4 offset-4">
+                            <b>Archivo</b>
+                            <input type="file" id="fichero" onchange="handleFileSelect(event);">
+                            <br>
+                        </div>
+                    </div>
 
+                </div>
+                <div id="step-2">
+                    <h2 class="StepTitle">Seleccione las cabeceras de las columnas</h2>
+                    <div id="llenar"></div>
+                </div>
+                <div id="step-3">
+                    <h2 class="StepTitle">Relacionar columnas</h2>
+                    <div class="row">
+                        <div class="col-md-12" id="completar">
+
+                        </div>
+                    </div>
+                </div>
+                <div id="step-4">
+                    <h2 class="StepTitle">Step 4 Content</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                        mollit anim id est laborum.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <br>
             <div class="row">
-                <div class="col-md-4 offset-4" style="text-align: right">
-                   <a href="#"  onclick="Importar(this);" class="btn btn-primary"> <span class="fa fa-cogs">Procesar</span></a>
+                <div class="col-md-12">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Resultado</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+            <div id="aqui"></div>
+            <div class="row">
+                <div class="col-md-4 offset-3" style="text-align: right">
+                    <a href="#" onclick="Procesar(this);" class="btn btn-primary"> <span class="fa fa-cogs">Procesar Datos</span></a>
                 </div>
             </div>
 
@@ -31,7 +134,7 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <table class="table table-responsive">
+                    <table class="table table-responsive ignore" style="display: none">
                         <thead>
                         <tr>
 
@@ -56,47 +159,145 @@
 
         </div>
     </div>
+
+    <!-- Small modal -->
+
+    <div class="modal fade importacion-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel2">Configurar importacion</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Seleccione cuales son las cabeceras de las columnas</h2>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <a href="#" data-process="false" onclick="ActualizarConfig(this)" class="btn btn-primary"><span
+                                class="fa fa-save"></span>Guardar</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- /modals -->
     <script>
-        function Importar(element){
+
+        function Importar(element) {
 
 
         }
 
-        var ExcelToJSON = function() {
+        var ExcelToJSON = function () {
 
-            this.parseExcel = function(file) {
+            this.parseExcel = function (file) {
                 var reader = new FileReader();
 
-                reader.onload = function(e) {
+               reader.onload = function (e) {
+                    var salida;
                     var data = e.target.result;
                     var workbook = XLSX.read(data, {
                         type: 'binary'
                     });
-                    workbook.SheetNames.forEach(function(sheetName) {
+
+                    workbook.SheetNames.forEach(function (sheetName) {
                         // Here is your object
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                         var json_object = JSON.stringify(XL_row_object);
-                        info=JSON.parse(json_object);
-                        for($i=0;$i<info.length;$i++){
-                            console.warn(info[$i]);
-                        }
+                        info = JSON.parse(json_object);
 
+                        $i = 0;
+
+                        $opciones = "";
+
+
+                        while ($i < 5 && $i < info.length) {
+
+                            $head = "";
+                            Object.entries(info[$i]).forEach(([key, value]) => {
+                                $head += value + " ;";
+
+                            });
+                            // $opciones+=$head;
+                            $opciones += '<div class="row"><div class="col-md-1 offset-1"><input type="radio" name="opcion" value="' + $i + '" onclick="getInfo(this)"></div> <div class="col-md-8">' + $head + '</div></div>';
+                            $i++;
+                        }
+                        document.getElementById("llenar")
+                            .innerHTML += $opciones;
+                       if(info.length>0){
+                           window.este=info;
+                       }
+                      // $('.importacion-modal').modal('show');
                     })
+
+
                 };
 
-                reader.onerror = function(ex) {
+
+                reader.onerror = function (ex) {
                     console.log(ex);
                 };
 
                 reader.readAsBinaryString(file);
-            };
+
+          };
+
         };
 
         function handleFileSelect(evt) {
 
             var files = evt.target.files; // FileList object
             var xl2json = new ExcelToJSON();
-            xl2json.parseExcel(files[0]);
+         xl2json.parseExcel(files[0]);
+
+        }
+
+        var columns=[];
+        var db = ["Nombre", "Apellidos", "CI", "Pasaporte", "Edad", "Sexo", "Color de la Piel", "Direccion", "Provincia", "Municipio", "Area de Salud", "Consultorio"]
+var selectedstep2=false;
+        function getInfo(element) {
+            selectedstep2=true;
+            document.getElementById("completar").innerHTML = "";
+            id = $(element).val();
+            if (id != null) {
+              info=window.este;
+                i = 0;
+                col = "";
+                select="";
+                Object.entries(info[id]).forEach(([key, value]) => {
+                    columns[i] = value;
+                 select+="<option value='"+i+"'>"+value+"</option>";
+                });
+                col="";
+               for(j=0;j<db.length;j++){
+                   col+="<div class='row'><div class='col-md-4'>"+(j+1)+"-"+db[j]+"</div><div class='col-md-4'><select>"+select+"</select></div></div>";
+               }
+                document.getElementById("completar").innerHTML += col;
+
+            }
+        }
+        function Siguiente(){
+          /*  console.warn($('#wizard'));
+            var fichero=$('#fichero');
+            if(fichero.val()==null || fichero.val()==""){
+                return false;
+            }
+            if(!selectedstep2) return false;*/
+            return true;
+        }
+        function Procesar(){
+
         }
     </script>
 {% endblock %}

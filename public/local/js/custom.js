@@ -1780,11 +1780,24 @@ function init_SmartWizard() {
     if (typeof ($.fn.smartWizard) === 'undefined') { return; }
     console.log('init_SmartWizard');
 
-    $('#wizard').smartWizard();
+  $('#wizard').smartWizard(
+        {
+            transitionEffect: 'fade', // Effect on navigation, none/fade/slide/slideleft
+            enableFinishButton: false, // make finish button enabled always
+            hideButtonsOnDisabled: true, // when the previous/next/finish buttons are disabled, hide them instead?
+            errorSteps:[],    // Array Steps with errors
+            labelNext:'Siguiente',
+            labelPrevious:'Anterior',
+            labelFinish:'Procesar Excel',
+            onLeaveStep: Siguiente, // triggers when leaving a step
+            onShowStep: null,  // triggers when showing a step
+            onFinish: Procesar  // triggers when Finish button is clicked
+        }
+    );
 
-    $('#wizard_verticle').smartWizard({
+   /* $('#wizard_verticle').smartWizard({
         transitionEffect: 'slide'
-    });
+    });*/
 
     $('.buttonNext').addClass('btn btn-success');
     $('.buttonPrevious').addClass('btn btn-primary');

@@ -251,6 +251,9 @@
 <!-- NProgress -->
 <script src={{ asset("plugins/nprogress/nprogress.js") }}></script>
 
+<script src="{{ asset('plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.js') }}"></script>
+
+
 <!-- bootstrap-daterangepicker -->
 <script src=" {{ asset('plugins/moment/min/moment.min.js') }}"></script>
 <script src="{{ asset('plugins/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
@@ -281,7 +284,7 @@
 
 {% endblock %}
 <!-- Custom Theme Scripts -->
-<script src={{ asset("local/js/custom.min.js") }}></script>
+<script src={{ asset("local/js/custom.js") }}></script>
 <script>
     $('table thead th').each(function () {
         var title = $(this).text();
@@ -289,7 +292,7 @@
         $(this).html('<b>' + title + '</b><input style="width: 80px" type="text" placeholder="Buscar" />');
     });
     {% if pacientes is not defined %}
-    $("table").DataTable({
+    $("table").not('.ignore').DataTable({
         dom: "Blfrtip",
         buttons: [{extend: "excel", className: "fa fa-save"}, {
             //    extend: "pdfHtml5",
